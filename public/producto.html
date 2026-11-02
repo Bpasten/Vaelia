@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Producto · Vaelia</title>
+  <meta name="description" content="Prendas Vaelia: elige color y talla, revisa materiales y cuidados, y compra con Webpay.">
+  <meta name="theme-color" content="#243C32">
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script type="module" src="/js/paginas/producto.js"></script>
+</head>
+<body>
+  <header id="cabecera"></header>
+
+  <main id="contenido" class="contenedor">
+    <nav aria-label="Ruta de navegación">
+      <ol class="migas" data-migas>
+        <li><a href="/">Inicio</a></li>
+        <li><a href="/coleccion">Colección</a></li>
+      </ol>
+    </nav>
+
+    <div data-ficha aria-live="polite">
+      <div class="ficha" aria-busy="true">
+        <div class="galeria"><div></div><div class="galeria__principal esqueleto"></div></div>
+        <div class="ficha__info">
+          <div class="esqueleto esqueleto-linea esqueleto-titulo"></div>
+          <div class="esqueleto esqueleto-linea esqueleto-corta"></div>
+          <div class="esqueleto esqueleto-linea esqueleto-bloque"></div>
+        </div>
+      </div>
+    </div>
+
+    <section class="seccion" aria-labelledby="relacionados-titulo" data-relacionados hidden>
+      <div class="cabeza-seccion">
+        <h2 class="titulo-seccion" id="relacionados-titulo">También te puede interesar</h2>
+        <a class="enlace-flecha" href="/coleccion">Ver colección <svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-flecha"></use></svg></a>
+      </div>
+      <div class="grilla-productos" data-grilla-relacionados></div>
+    </section>
+  </main>
+
+  <dialog class="modal" id="guia-tallas" aria-labelledby="guia-titulo">
+    <div class="modal__cabecera">
+      <h2 id="guia-titulo">Guía de tallas</h2>
+      <button class="icono-btn" type="button" data-cerrar-guia aria-label="Cerrar guía de tallas"><svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-cerrar"></use></svg></button>
+    </div>
+    <div class="modal__cuerpo">
+      <table class="tabla">
+        <thead><tr><th scope="col">Talla</th><th scope="col">Busto</th><th scope="col">Cintura</th><th scope="col">Cadera</th></tr></thead>
+        <tbody>
+          <tr><td>XS</td><td>80–84</td><td>62–66</td><td>88–92</td></tr>
+          <tr><td>S</td><td>85–89</td><td>67–71</td><td>93–97</td></tr>
+          <tr><td>M</td><td>90–94</td><td>72–76</td><td>98–102</td></tr>
+          <tr><td>L</td><td>95–100</td><td>77–82</td><td>103–108</td></tr>
+          <tr><td>XL</td><td>101–106</td><td>83–88</td><td>109–114</td></tr>
+        </tbody>
+      </table>
+      <p class="modal__nota">Medidas del cuerpo en centímetros. Si estás entre dos tallas, te recomendamos la mayor para prendas estructuradas y la menor para tejidos con elasticidad.</p>
+    </div>
+  </dialog>
+
+  <footer id="pie"></footer>
+</body>
+</html>

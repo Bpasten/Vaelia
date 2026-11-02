@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Colección · Vaelia</title>
+  <meta name="description" content="Colección Vaelia: blazers, blusas, vestidos, pantalones, faldas y tejidos. Filtra por categoría, color, talla y ocasión.">
+  <meta name="theme-color" content="#243C32">
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script type="module" src="/js/paginas/catalogo.js"></script>
+</head>
+<body>
+  <header id="cabecera"></header>
+
+  <main id="contenido">
+    <section class="cabeza-catalogo" aria-labelledby="catalogo-titulo">
+      <div class="cabeza-catalogo__texto">
+        <p class="eyebrow">Colección</p>
+        <h1 id="catalogo-titulo" data-titulo>Diseñada para cada momento de tu vida.</h1>
+        <p>Prendas versátiles, atemporales y de alta calidad. Porque cada ocasión merece una versión de ti.</p>
+      </div>
+      <div class="cabeza-catalogo__img" aria-hidden="true">
+        <img src="/img/productos/vestido-musgo-verde-salvia-frente.svg" alt="" width="800" height="1000">
+      </div>
+    </section>
+
+    <div class="filtros">
+      <div class="contenedor">
+        <form class="filtros__barra" data-filtros role="search" aria-label="Filtrar productos">
+          <div class="buscar-catalogo">
+            <svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-buscar"></use></svg>
+            <input type="search" name="q" placeholder="Buscar" aria-label="Buscar en la colección" maxlength="60" autocomplete="off">
+          </div>
+          <div class="selector">
+            <select name="categoria" aria-label="Categoría"><option value="">Categoría</option></select>
+            <svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-chevron"></use></svg>
+          </div>
+          <div class="selector">
+            <select name="color" aria-label="Color"><option value="">Color</option></select>
+            <svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-chevron"></use></svg>
+          </div>
+          <div class="selector">
+            <select name="talla" aria-label="Talla"><option value="">Talla</option></select>
+            <svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-chevron"></use></svg>
+          </div>
+          <div class="selector">
+            <select name="ocasion" aria-label="Ocasión"><option value="">Ocasión</option></select>
+            <svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-chevron"></use></svg>
+          </div>
+          <div class="selector selector--orden">
+            <select name="orden" aria-label="Ordenar por">
+              <option value="destacados">Ordenar por: destacados</option>
+              <option value="recientes">Más recientes</option>
+              <option value="precio_asc">Precio: menor a mayor</option>
+              <option value="precio_desc">Precio: mayor a menor</option>
+              <option value="nombre">Nombre A–Z</option>
+            </select>
+            <svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-chevron"></use></svg>
+          </div>
+        </form>
+        <div class="chips" data-chips></div>
+      </div>
+    </div>
+
+    <section class="contenedor" aria-labelledby="catalogo-titulo">
+      <p class="resultado" data-resultado aria-live="polite">Cargando prendas…</p>
+      <div class="grilla-productos grilla-productos--3" data-grilla></div>
+      <nav class="paginacion" data-paginacion aria-label="Páginas del catálogo"></nav>
+    </section>
+
+    <section class="banner-bosque" aria-labelledby="banner-titulo">
+      <div class="contenedor">
+        <h2 id="banner-titulo">Su estilo, sin límites.</h2>
+        <p>Descubre la colección completa y arma tu versión de cada día.</p>
+        <a class="btn btn-borde-claro" href="/coleccion" data-ver-todo>Ver todo <svg class="i i-flecha" aria-hidden="true"><use href="/img/icons.svg#i-flecha"></use></svg></a>
+      </div>
+    </section>
+  </main>
+
+  <footer id="pie"></footer>
+</body>
+</html>
