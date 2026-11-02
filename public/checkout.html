@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Finalizar compra · Vaelia</title>
+  <meta name="theme-color" content="#243C32">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script type="module" src="/js/paginas/checkout.js"></script>
+</head>
+<body>
+  <header class="cabecera-pago">
+    <div class="contenedor">
+      <a class="logo" href="/" aria-label="Vaelia, ir al inicio"><svg class="logo__rama" aria-hidden="true"><use href="/img/icons.svg#i-rama"></use></svg><span class="logo__texto">VAELIA</span></a>
+      <span class="pago-seguro"><svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-candado"></use></svg>Pago seguro</span>
+    </div>
+  </header>
+
+  <main id="contenido" class="contenedor">
+    <ol class="pasos" aria-label="Pasos de la compra">
+      <li class="paso activo" data-paso-ind="1"><span class="paso__num">1</span>Datos</li>
+      <li class="paso" data-paso-ind="2"><span class="paso__num">2</span>Envío</li>
+      <li class="paso" data-paso-ind="3"><span class="paso__num">3</span>Pago</li>
+      <li class="paso" data-paso-ind="4"><span class="paso__num">4</span>Confirmación</li>
+    </ol>
+
+    <div data-vacio hidden>
+      <div class="vacio">
+        <svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-bolsa"></use></svg>
+        <h2>Tu carrito está vacío</h2>
+        <p>Agrega algunas prendas para continuar con la compra.</p>
+        <a class="btn btn-primario" href="/coleccion">Ver colección <svg class="i i-flecha" aria-hidden="true"><use href="/img/icons.svg#i-flecha"></use></svg></a>
+      </div>
+    </div>
+
+    <form class="checkout" data-checkout novalidate hidden>
+      <div>
+        <div class="alerta" role="alert" data-alerta-general hidden></div>
+
+        <!-- Paso 1: datos de contacto -->
+        <section class="bloque" data-paso="1" aria-labelledby="paso1-titulo">
+          <div class="bloque__cabeza">
+            <h2 id="paso1-titulo"><span>01</span>Datos de contacto</h2>
+            <button class="editar" type="button" data-editar="1" hidden>Editar</button>
+          </div>
+          <div data-cuerpo>
+            <p class="resumen-paso aviso-sesion" data-sesion-aviso>¿Ya tienes cuenta? <a class="enlace-subrayado" href="/cuenta?volver=/checkout">Inicia sesión</a> para usar tus datos guardados.</p>
+            <div class="fila-campos">
+              <div class="campo">
+                <label for="c-nombre">Nombre</label>
+                <input class="control" id="c-nombre" name="contacto.nombre" autocomplete="given-name" required maxlength="60">
+                <p class="error-campo" data-para="contacto.nombre" hidden></p>
+              </div>
+              <div class="campo">
+                <label for="c-apellido">Apellido</label>
+                <input class="control" id="c-apellido" name="contacto.apellido" autocomplete="family-name" required maxlength="60">
+                <p class="error-campo" data-para="contacto.apellido" hidden></p>
+              </div>
+            </div>
+            <div class="campo">
+              <label for="c-email">Correo electrónico</label>
+              <input class="control" id="c-email" name="contacto.email" type="email" autocomplete="email" inputmode="email" required maxlength="120">
+              <p class="error-campo" data-para="contacto.email" hidden></p>
+            </div>
+            <div class="fila-campos">
+              <div class="campo">
+                <label for="c-telefono">Celular</label>
+                <input class="control" id="c-telefono" name="contacto.telefono" type="tel" autocomplete="tel" inputmode="tel" placeholder="+56 9 1234 5678" required maxlength="16">
+                <p class="error-campo" data-para="contacto.telefono" hidden></p>
+              </div>
+              <div class="campo">
+                <label for="c-rut">RUT <small>opcional, para tu boleta</small></label>
+                <input class="control" id="c-rut" name="contacto.rut" placeholder="12.345.678-9" maxlength="12">
+                <p class="error-campo" data-para="contacto.rut" hidden></p>
+              </div>
+            </div>
+            <button class="btn btn-primario" type="button" data-continuar="1">Continuar al envío <svg class="i i-flecha" aria-hidden="true"><use href="/img/icons.svg#i-flecha"></use></svg></button>
+          </div>
+          <p class="resumen-paso" data-resumen hidden></p>
+        </section>
+
+        <!-- Paso 2: despacho -->
+        <section class="bloque bloque--bloqueado" data-paso="2" aria-labelledby="paso2-titulo">
+          <div class="bloque__cabeza">
+            <h2 id="paso2-titulo"><span>02</span>Envío</h2>
+            <button class="editar" type="button" data-editar="2" hidden>Editar</button>
+          </div>
+          <div data-cuerpo hidden>
+            <fieldset class="opciones">
+              <legend class="sr-only">Tipo de entrega</legend>
+              <label class="opcion-radio">
+                <input type="radio" name="despacho.tipo" value="domicilio" checked>
+                <svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-camion"></use></svg>
+                <span><strong>Despacho a domicilio</strong><small>2 a 5 días hábiles · todo Chile</small></span>
+                <span class="opcion-radio__precio" data-precio-domicilio></span>
+              </label>
+              <label class="opcion-radio">
+                <input type="radio" name="despacho.tipo" value="retiro">
+                <svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-tienda"></use></svg>
+                <span><strong>Retiro en showroom</strong><small data-retiro-texto>Providencia, Región Metropolitana</small></span>
+                <span class="opcion-radio__precio">Gratis</span>
+              </label>
+            </fieldset>
+            <div data-direccion>
+              <div class="fila-campos">
+                <div class="campo">
+                  <label for="d-region">Región</label>
+                  <select class="control" id="d-region" name="despacho.region" required autocomplete="address-level1"><option value="">Selecciona tu región</option></select>
+                  <p class="error-campo" data-para="despacho.region" hidden></p>
+                </div>
+                <div class="campo">
+                  <label for="d-comuna">Comuna</label>
+                  <input class="control" id="d-comuna" name="despacho.comuna" required maxlength="60" autocomplete="address-level2">
+                  <p class="error-campo" data-para="despacho.comuna" hidden></p>
+                </div>
+              </div>
+              <div class="fila-campos">
+                <div class="campo">
+                  <label for="d-calle">Calle y número</label>
+                  <input class="control" id="d-calle" name="despacho.calle" required maxlength="120" autocomplete="address-line1" placeholder="Av. Providencia 1234">
+                  <p class="error-campo" data-para="despacho.calle" hidden></p>
+                </div>
+                <div class="campo">
+                  <label for="d-depto">Depto / casa <small>opcional</small></label>
+                  <input class="control" id="d-depto" name="despacho.depto" maxlength="40" autocomplete="address-line2">
+                  <p class="error-campo" data-para="despacho.depto" hidden></p>
+                </div>
+              </div>
+              <div class="campo">
+                <label for="d-ref">Referencias <small>opcional</small></label>
+                <input class="control" id="d-ref" name="despacho.referencia" maxlength="160" placeholder="Ej.: conserjería, timbre, horario">
+                <p class="error-campo" data-para="despacho.referencia" hidden></p>
+              </div>
+              <label class="casilla casilla--espacio" data-guardar-direccion hidden>
+                <input type="checkbox" name="guardar_direccion" checked>
+                <span>Guardar esta dirección en mi cuenta para próximas compras</span>
+              </label>
+            </div>
+            <button class="btn btn-primario" type="button" data-continuar="2">Continuar al pago <svg class="i i-flecha" aria-hidden="true"><use href="/img/icons.svg#i-flecha"></use></svg></button>
+          </div>
+          <p class="resumen-paso" data-resumen hidden></p>
+        </section>
+
+        <!-- Paso 3: pago -->
+        <section class="bloque bloque--bloqueado" data-paso="3" aria-labelledby="paso3-titulo">
+          <div class="bloque__cabeza">
+            <h2 id="paso3-titulo"><span>03</span>Pago</h2>
+          </div>
+          <div data-cuerpo hidden>
+            <fieldset class="opciones">
+              <legend class="sr-only">Medio de pago</legend>
+              <label class="opcion-radio">
+                <input type="radio" name="medio" value="webpay" checked>
+                <svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-tarjeta"></use></svg>
+                <span>
+                  <strong>Webpay Plus · Transbank</strong>
+                  <small>Tarjetas de crédito, débito y prepago</small>
+                  <span class="marcas-pago" aria-label="Tarjetas aceptadas"><span>VISA</span><span>Mastercard</span><span>Redcompra</span><span>AMEX</span><span>Prepago</span></span>
+                </span>
+              </label>
+              <label class="opcion-radio opcion-radio--off" aria-disabled="true">
+                <input type="radio" name="medio" value="transferencia" disabled>
+                <svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-cambio"></use></svg>
+                <span><strong>Transferencia bancaria</strong><small>Disponible próximamente</small></span>
+                <span class="etiqueta-pronto">Pronto</span>
+              </label>
+            </fieldset>
+
+            <div class="nota-dev" data-nota-integracion hidden>
+              <strong>Ambiente de integración (pruebas)</strong>
+              No se realizan cobros reales. En Webpay usa la tarjeta VISA <code>4051 8856 0044 6623</code>, CVV <code>123</code> y cualquier fecha futura.
+              Cuando te pida autenticación: RUT <code>11.111.111-1</code> y clave <code>123</code>. Para probar un rechazo usa la Mastercard <code>5186 0595 5959 0568</code>.
+            </div>
+
+            <label class="casilla">
+              <input type="checkbox" name="acepta_terminos">
+              <span>Acepto los términos y condiciones de compra y la política de cambios y devoluciones.</span>
+            </label>
+            <p class="error-campo" data-para="terminos" hidden></p>
+            <button class="btn btn-primario btn-bloque btn-pagar" type="submit" data-pagar>Pagar ahora <svg class="i i-flecha" aria-hidden="true"><use href="/img/icons.svg#i-flecha"></use></svg></button>
+            <p class="nota-segura"><svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-candado"></use></svg>Serás redirigida al sitio seguro de Webpay para completar el pago.</p>
+          </div>
+        </section>
+      </div>
+
+      <!-- Resumen del pedido -->
+      <aside class="resumen" aria-labelledby="resumen-titulo">
+        <h2 id="resumen-titulo">Tu pedido <button type="button" data-abrir-carrito>Editar</button></h2>
+        <div class="alerta alerta--aviso" data-avisos hidden></div>
+        <div class="resumen__items" data-items></div>
+        <div class="fila-total"><span>Subtotal</span><span data-subtotal>—</span></div>
+        <div class="fila-total"><span>Envío</span><span data-envio>—</span></div>
+        <div class="fila-total fila-total--grande"><span>Total</span><strong data-total>—</strong></div>
+        <p class="nota-segura"><svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-escudo"></use></svg>Pago procesado por Transbank. Vaelia no almacena los datos de tu tarjeta.</p>
+      </aside>
+    </form>
+  </main>
+</body>
+</html>

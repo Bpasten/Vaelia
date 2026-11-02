@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Iniciar sesión · Vaelia</title>
+  <meta name="description" content="Ingresa o crea tu cuenta Vaelia para comprar más rápido y seguir tus pedidos.">
+  <meta name="theme-color" content="#243C32">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script type="module" src="/js/paginas/acceso.js"></script>
+</head>
+<body>
+  <header class="cabecera-simple">
+    <div class="contenedor">
+      <a class="logo" href="/" aria-label="Vaelia, ir al inicio"><svg class="logo__rama" aria-hidden="true"><use href="/img/icons.svg#i-rama"></use></svg><span class="logo__texto">VAELIA</span></a>
+      <a class="volver" href="/" data-volver-tienda><svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-flecha-izq"></use></svg>Volver a la tienda</a>
+    </div>
+  </header>
+
+  <main id="contenido" class="acceso">
+    <section class="acceso__marca" aria-label="Beneficios de tener cuenta">
+      <div>
+        <svg class="hero__rama" aria-hidden="true"><use href="/img/icons.svg#i-rama"></use></svg>
+        <h2>VAELIA</h2>
+        <p class="hero__lema">Vístete para ti.</p>
+        <span class="hero__linea" aria-hidden="true"></span>
+        <ul class="acceso__beneficios">
+          <li>Tus datos guardados para comprar más rápido</li>
+          <li>Historial y seguimiento de tus pedidos</li>
+          <li>Tu dirección lista en cada despacho</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="acceso__form">
+      <div class="acceso__caja">
+        <div class="pestanas" role="tablist" aria-label="Acceso a tu cuenta">
+          <button class="pestana" type="button" role="tab" id="tab-ingresar" aria-controls="panel-ingresar" aria-selected="true">Iniciar sesión</button>
+          <button class="pestana" type="button" role="tab" id="tab-crear" aria-controls="panel-crear" aria-selected="false" tabindex="-1">Crear cuenta</button>
+        </div>
+
+        <!-- Iniciar sesión (HU18) -->
+        <div role="tabpanel" id="panel-ingresar" aria-labelledby="tab-ingresar">
+          <h1>Hola de nuevo</h1>
+          <p class="acceso__sub">Ingresa con tu correo y contraseña.</p>
+          <div class="alerta" role="alert" data-alerta hidden></div>
+          <a class="btn btn-borde btn-bloque" href="/cuenta" data-google hidden>Continuar con Google</a>
+          <p class="acceso__o" data-google-sep hidden>o con tu correo</p>
+          <form data-form-login novalidate>
+            <div class="campo">
+              <label for="login-email">Correo electrónico</label>
+              <input class="control" id="login-email" name="email" type="email" autocomplete="email" required maxlength="120" inputmode="email">
+            </div>
+            <div class="campo">
+              <label for="login-pass">Contraseña</label>
+              <div class="con-boton">
+                <input class="control" id="login-pass" name="password" type="password" autocomplete="current-password" required maxlength="72">
+                <button class="ver-btn" type="button" data-ver="login-pass" aria-pressed="false" aria-label="Mostrar contraseña">Ver</button>
+              </div>
+            </div>
+            <button class="btn btn-primario btn-bloque" type="submit">Iniciar sesión</button>
+          </form>
+          <p class="alt-acceso">¿No tienes cuenta?<button type="button" data-ir="crear">Crea una aquí</button></p>
+        </div>
+
+        <!-- Crear cuenta (HU17) -->
+        <div role="tabpanel" id="panel-crear" aria-labelledby="tab-crear" hidden>
+          <h1>Crea tu cuenta</h1>
+          <p class="acceso__sub">Es opcional: también puedes comprar como invitada.</p>
+          <div class="alerta" role="alert" data-alerta hidden></div>
+          <form data-form-registro novalidate>
+            <div class="fila-campos">
+              <div class="campo">
+                <label for="reg-nombre">Nombre</label>
+                <input class="control" id="reg-nombre" name="nombre" autocomplete="given-name" required maxlength="60">
+                <p class="error-campo" data-para="nombre" hidden></p>
+              </div>
+              <div class="campo">
+                <label for="reg-apellido">Apellido</label>
+                <input class="control" id="reg-apellido" name="apellido" autocomplete="family-name" required maxlength="60">
+                <p class="error-campo" data-para="apellido" hidden></p>
+              </div>
+            </div>
+            <div class="campo">
+              <label for="reg-email">Correo electrónico</label>
+              <input class="control" id="reg-email" name="email" type="email" autocomplete="email" required maxlength="120" inputmode="email">
+              <p class="error-campo" data-para="email" hidden></p>
+            </div>
+            <div class="campo">
+              <label for="reg-pass">Contraseña <small>mínimo 8 caracteres, con letras y números</small></label>
+              <div class="con-boton">
+                <input class="control" id="reg-pass" name="password" type="password" autocomplete="new-password" required minlength="8" maxlength="72" aria-describedby="fuerza-texto">
+                <button class="ver-btn" type="button" data-ver="reg-pass" aria-pressed="false" aria-label="Mostrar contraseña">Ver</button>
+              </div>
+              <div class="fuerza" aria-hidden="true"><span data-fuerza></span></div>
+              <p class="ayuda" id="fuerza-texto" data-fuerza-texto></p>
+              <p class="error-campo" data-para="password" hidden></p>
+            </div>
+            <div class="campo">
+              <label for="reg-confirmar">Repite la contraseña</label>
+              <input class="control" id="reg-confirmar" name="confirmar" type="password" autocomplete="new-password" required maxlength="72">
+              <p class="error-campo" data-para="confirmar" hidden></p>
+            </div>
+            <button class="btn btn-primario btn-bloque" type="submit">Crear cuenta</button>
+          </form>
+          <p class="alt-acceso">¿Ya tienes cuenta?<button type="button" data-ir="ingresar">Inicia sesión</button></p>
+        </div>
+
+        <div class="separador" aria-hidden="true"></div>
+        <p class="invitada">¿Prefieres no registrarte?<a href="/checkout" data-invitada>Compra como invitada</a></p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vaelia · Vístete para ti.</title>
+  <meta name="description" content="Vaelia: prendas versátiles para mujeres que se eligen a sí mismas. Blazers, blusas, vestidos y pantalones para la oficina, la reunión y el evento. Envíos a todo Chile.">
+  <meta name="theme-color" content="#243C32">
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/fonts/cormorant-garamond-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/montserrat-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/styles.css">
+  <script type="module" src="/js/paginas/inicio.js"></script>
+</head>
+<body>
+  <header id="cabecera"></header>
+
+  <main id="contenido">
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-titulo">
+      <div class="contenedor hero__grid">
+        <div class="hero__arco">
+          <img src="/img/productos/blazer-esencial-verde-bosque-frente.svg" alt="Blazer Esencial en verde bosque, colgado en una percha" width="800" height="1000" data-hero-img>
+          <a class="hero__etiqueta" href="/producto?p=blazer-esencial" data-hero-enlace>
+            <small>Pieza de la temporada</small>
+            <strong data-hero-nombre>Blazer Esencial</strong>
+            <span data-hero-precio></span>
+          </a>
+        </div>
+        <div class="hero__texto">
+          <svg class="hero__rama" aria-hidden="true"><use href="/img/icons.svg#i-rama"></use></svg>
+          <h1 id="hero-titulo">VAELIA</h1>
+          <p class="hero__lema">Vístete para ti.</p>
+          <span class="hero__linea" aria-hidden="true"></span>
+          <p class="hero__bajada">Prendas versátiles para mujeres que se eligen a sí mismas.</p>
+          <a class="btn btn-claro" href="/coleccion">Explorar colección <svg class="i i-flecha" aria-hidden="true"><use href="/img/icons.svg#i-flecha"></use></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Valores de marca -->
+    <section class="valores" aria-label="Lo que nos define">
+      <div class="contenedor valores__grid">
+        <div class="valor">
+          <span class="valor__icono"><svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-hoja"></use></svg></span>
+          <div><h3>Consciente</h3><p>Elegimos materiales responsables.</p></div>
+        </div>
+        <div class="valor">
+          <span class="valor__icono"><svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-rama"></use></svg></span>
+          <div><h3>Versátil</h3><p>Para cada ocasión.</p></div>
+        </div>
+        <div class="valor">
+          <span class="valor__icono"><svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-corazon"></use></svg></span>
+          <div><h3>Auténtica</h3><p>Porque el amor propio empieza contigo.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Una prenda, todo tu día -->
+    <section class="seccion" aria-labelledby="ocasiones-titulo">
+      <div class="contenedor ocasiones">
+        <div class="ocasiones__texto">
+          <p class="eyebrow">Nueva colección</p>
+          <h2 id="ocasiones-titulo">Una prenda.<br>Todo tu día.</h2>
+          <p>Piezas que pasan de la oficina a la reunión y de la reunión al evento, sin perder tu esencia.</p>
+          <a class="enlace-flecha" href="/coleccion">Ver colección <svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-flecha"></use></svg></a>
+        </div>
+        <div class="ocasiones__tiles">
+          <a class="tile" href="/coleccion?ocasion=oficina">
+            <span class="tile__img"><img src="/img/productos/blazer-esencial-negro-frente.svg" alt="" loading="lazy" width="800" height="1000"></span>
+            <span class="tile__nombre">Oficina</span>
+          </a>
+          <a class="tile" href="/coleccion?ocasion=reunion">
+            <span class="tile__img"><img src="/img/productos/blusa-serena-marfil-frente.svg" alt="" loading="lazy" width="800" height="1000"></span>
+            <span class="tile__nombre">Reunión</span>
+          </a>
+          <a class="tile" href="/coleccion?ocasion=evento">
+            <span class="tile__img"><img src="/img/productos/vestido-alma-verde-bosque-frente.svg" alt="" loading="lazy" width="800" height="1000"></span>
+            <span class="tile__nombre">Evento</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Destacados (desde la API) -->
+    <section class="seccion seccion--papel" aria-labelledby="destacados-titulo">
+      <div class="contenedor">
+        <div class="cabeza-seccion">
+          <h2 class="titulo-seccion" id="destacados-titulo">Productos destacados</h2>
+          <a class="enlace-flecha" href="/coleccion">Ver todos <svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-flecha"></use></svg></a>
+        </div>
+        <div class="grilla-productos" data-destacados aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- Del trabajo al evento -->
+    <section class="banner-dual" aria-labelledby="dual-titulo">
+      <div class="banner-dual__img" aria-hidden="true">
+        <img src="/img/productos/blazer-esencial-cafe-corteza-frente.svg" alt="" loading="lazy" width="800" height="1000">
+        <img src="/img/productos/vestido-alma-negro-frente.svg" alt="" loading="lazy" width="800" height="1000">
+      </div>
+      <div class="banner-dual__texto">
+        <p class="eyebrow">Del trabajo</p>
+        <h2 id="dual-titulo">al evento.</h2>
+        <p>Una colección que acompaña tu ritmo: estructura para el día, caída y brillo para la noche.</p>
+        <a class="enlace-flecha" href="/coleccion?ocasion=evento">Explorar <svg class="i" aria-hidden="true"><use href="/img/icons.svg#i-flecha"></use></svg></a>
+      </div>
+    </section>
+
+    <!-- Nosotras -->
+    <section class="seccion" id="nosotras" aria-labelledby="marca-titulo">
+      <div class="contenedor">
+        <div class="marca">
+          <div class="marca__img">
+            <img src="/img/marca/bolsa.jpg" alt="Bolsa de papel kraft con el logo de Vaelia y asas de cinta verde bosque" loading="lazy" width="660" height="580">
+          </div>
+          <div>
+            <p class="eyebrow">Nosotras</p>
+            <h2 id="marca-titulo">VAELIA</h2>
+            <p class="marca__sub">Elegancia que se siente tuya.</p>
+            <p>Creemos en prendas que acompañen tu historia, no que la opaquen. Diseñamos piezas atemporales, de buena calidad y fáciles de combinar, para que te vistas pensando en ti y en nadie más.</p>
+            <div class="marca__valores">
+              <div><strong>Versátil</strong><span>Te acompaña en todos tus momentos.</span></div>
+              <div><strong>Consciente</strong><span>Inspirada en la naturaleza, hecha para durar.</span></div>
+              <div><strong>Auténtica</strong><span>Porque el amor propio empieza contigo.</span></div>
+            </div>
+            <a class="btn btn-borde" href="/coleccion">Conoce la colección <svg class="i i-flecha" aria-hidden="true"><use href="/img/icons.svg#i-flecha"></use></svg></a>
+          </div>
+        </div>
+
+        <div class="detalles" aria-label="Cada pedido llega como un regalo">
+          <figure class="detalle"><img src="/img/marca/etiqueta.jpg" alt="Etiqueta colgante verde bosque de Vaelia" loading="lazy" width="504" height="406"><figcaption>Etiqueta colgante</figcaption></figure>
+          <figure class="detalle"><img src="/img/marca/gracias.jpg" alt="Tarjeta de agradecimiento: Gracias por elegirte" loading="lazy" width="544" height="406"><figcaption>Tarjeta de agradecimiento</figcaption></figure>
+          <figure class="detalle"><img src="/img/marca/sticker.jpg" alt="Sello circular de Vaelia sobre papel de seda" loading="lazy" width="510" height="560"><figcaption>Sello de cierre</figcaption></figure>
+          <figure class="detalle"><img src="/img/marca/papel.jpg" alt="Papel de seda estampado con el logo de Vaelia" loading="lazy" width="510" height="472"><figcaption>Papel de seda</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter" aria-labelledby="news-titulo">
+      <div class="contenedor">
+        <p class="eyebrow">Mantente cerca</p>
+        <h2 id="news-titulo">Recibe novedades, lanzamientos y promociones exclusivas.</h2>
+        <form class="form-linea" data-newsletter novalidate>
+          <label class="sr-only" for="news-email">Tu correo electrónico</label>
+          <input id="news-email" type="email" name="email" placeholder="Tu correo electrónico" autocomplete="email" required maxlength="120">
+          <button class="btn btn-claro" type="submit">Suscribirme <svg class="i i-flecha" aria-hidden="true"><use href="/img/icons.svg#i-flecha"></use></svg></button>
+        </form>
+        <p class="newsletter__msg" data-newsletter-msg role="status"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer id="pie"></footer>
+</body>
+</html>
