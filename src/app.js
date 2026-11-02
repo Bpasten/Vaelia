@@ -24,11 +24,11 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       imgSrc: ["'self'", 'data:'],
       fontSrc: ["'self'"],
-      connectSrc: ["'self'"],
+      connectSrc: ["'self'", 'https://vitals.vercel-insights.com'],
       formAction: ["'self'", 'https://webpay3gint.transbank.cl', 'https://webpay3g.transbank.cl'],
       frameAncestors: ["'none'"],
       objectSrc: ["'none'"],

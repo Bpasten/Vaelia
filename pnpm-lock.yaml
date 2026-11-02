@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@vercel/analytics':
+        specifier: ^2.0.1
+        version: 2.0.1
       bcryptjs:
         specifier: ^3.0.3
         version: 3.0.3
@@ -37,12 +40,41 @@ importers:
         version: 3.24.6(@types/node@26.6.6)
       transbank-sdk:
         specifier: ^6.1.1
-        version: 6.1.1(debug@4.4.3)
+        version: 6.1.1
 
 packages:
 
   '@types/node@26.6.6':
     resolution: {integrity: sha512-MzQj+8Kx3XI40OmUAE6Qoh58ZMNstNNMwn2nfd3qWsfe7nDNSqJNzes4njhz6AHwrSHOffSLwXU6yb474Q4aog==}
+
+  '@vercel/analytics@2.0.1':
+    resolution: {integrity: sha512-MTQG6V9qQrt1tsDeF+2Uoo5aPjqbVPys1xvnIftXSJYG2SrwXRHnqEvVoYID7BTruDz4lCd2Z7rM1BdkUehk2g==}
+    peerDependencies:
+      '@remix-run/react': ^2
+      '@sveltejs/kit': ^1 || ^2
+      next: '>= 13'
+      nuxt: '>= 3'
+      react: ^18 || ^19 || ^19.0.0-rc
+      svelte: '>= 4'
+      vue: ^3
+      vue-router: ^4
+    peerDependenciesMeta:
+      '@remix-run/react':
+        optional: true
+      '@sveltejs/kit':
+        optional: true
+      next:
+        optional: true
+      nuxt:
+        optional: true
+      react:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
+      vue-router:
+        optional: true
 
   accepts@2.0.0:
     resolution: {integrity: sha512-5cvg6CtKwfgdmVqY1WIiXKc3Q1bkRqGLi+2W/6ao+6Y7gu/RCwRuAhGEzh5B4KlszSuTLgZYuqFqo5bImjNKng==}
@@ -480,6 +512,8 @@ snapshots:
     dependencies:
       undici-types: 8.9.0
 
+  '@vercel/analytics@2.0.1': {}
+
   accepts@2.0.0:
     dependencies:
       mime-types: 3.0.2
@@ -495,9 +529,9 @@ snapshots:
 
   aws-ssl-profiles@1.1.2: {}
 
-  axios@1.21.0(debug@4.4.3):
+  axios@1.21.0:
     dependencies:
-      follow-redirects: 1.16.2(debug@4.4.3)
+      follow-redirects: 1.16.2
       form-data: 4.0.6
       https-proxy-agent: 5.0.1
       proxy-from-env: 2.1.0
@@ -654,9 +688,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  follow-redirects@1.16.2(debug@4.4.3):
-    optionalDependencies:
-      debug: 4.4.3
+  follow-redirects@1.16.2: {}
 
   form-data@4.0.6:
     dependencies:
@@ -932,9 +964,9 @@ snapshots:
 
   toidentifier@1.0.1: {}
 
-  transbank-sdk@6.1.1(debug@4.4.3):
+  transbank-sdk@6.1.1:
     dependencies:
-      axios: 1.21.0(debug@4.4.3)
+      axios: 1.21.0
     transitivePeerDependencies:
       - debug
       - supports-color
