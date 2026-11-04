@@ -87,7 +87,7 @@ const ENLACES = [
   { id: 'contacto', texto: 'Contacto', href: '#contacto' },
 ];
 
-const logo = () => `<a class="logo" href="/" aria-label="Vaelia, ir al inicio">${icono('rama', 'logo__rama')}<span class="logo__texto">VAELIA</span></a>`;
+const logo = (version = 'verde') => `<a class="logo" href="/" aria-label="Vaelia, ir al inicio"><img class="logo__imagen" src="/img/marca/logo-vaelia-${version}.png" alt="Vaelia" width="203" height="245"></a>`;
 
 function htmlCabecera(activo) {
   return `
@@ -119,7 +119,7 @@ function htmlCabecera(activo) {
 function htmlMenuMovil() {
   return `
   <aside class="panel panel--izq menu-movil" id="menu-movil" role="dialog" aria-modal="true" aria-label="Menú" hidden>
-    <div class="panel__cabecera">${logo()}<button class="icono-btn" type="button" data-cerrar aria-label="Cerrar menú">${icono('cerrar')}</button></div>
+    <div class="panel__cabecera">${logo('dorado')}<button class="icono-btn" type="button" data-cerrar aria-label="Cerrar menú">${icono('cerrar')}</button></div>
     <form class="menu-movil__buscar" action="/coleccion" method="get" role="search">
       ${icono('buscar')}<input class="control" type="search" name="q" placeholder="Buscar en la colección" aria-label="Buscar productos" maxlength="60">
     </form>
@@ -151,7 +151,7 @@ function htmlPie() {
   <div class="contenedor">
     <div class="pie__grid">
       <div>
-        ${logo()}
+        ${logo('dorado')}
         <p class="pie__lema">Vístete para ti.</p>
         <p class="pie__texto">Prendas versátiles para mujeres que se eligen a sí mismas. Diseñadas en Chile para acompañarte de la oficina al evento.</p>
       </div>
