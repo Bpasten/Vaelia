@@ -112,7 +112,7 @@ CREATE TABLE variantes (
   id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   producto_id     INT UNSIGNED NOT NULL,
   color_id        INT UNSIGNED NOT NULL,
-  talla           ENUM('XS','S','M','L','XL') NOT NULL,
+  talla           ENUM('S','M','L','XL','XXL') NOT NULL,
   sku             VARCHAR(40)  NOT NULL,
   stock           INT UNSIGNED NOT NULL DEFAULT 0,
   UNIQUE KEY uq_variantes_sku (sku),

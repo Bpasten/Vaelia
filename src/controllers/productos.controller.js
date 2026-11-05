@@ -3,7 +3,7 @@ const { query } = require('../config/db');
 const HttpError = require('../utils/http-error');
 const { texto } = require('../utils/validar');
 
-const TALLAS = ['XS', 'S', 'M', 'L', 'XL'];
+const TALLAS = ['S', 'M', 'L', 'XL', 'XXL'];
 const OCASIONES = { oficina: 'Oficina', reunion: 'Reunión', evento: 'Evento' };
 const ORDENES = {
   destacados: 'p.destacado DESC, p.id ASC',
