@@ -8,7 +8,7 @@ iniciarPagina({ activo: 'coleccion' });
 const params = new URLSearchParams(location.search);
 const slug = params.get('p');
 const contenedor = document.querySelector('[data-ficha]');
-const TALLAS = ['XS', 'S', 'M', 'L', 'XL'];
+const TALLAS = ['S', 'M', 'L', 'XL', 'XXL'];
 
 let producto;
 let reglasEnvio = { gratisDesde: 60000, rm: 3990 };

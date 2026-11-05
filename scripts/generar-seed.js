@@ -16,7 +16,7 @@ const fila = (vals) => `(${vals.map(esc).join(', ')})`;
 // Stock determinístico (siempre el mismo seed) con algunas tallas agotadas
 function stockPara(sku, talla) {
   const h = crypto.createHash('md5').update(sku).digest()[0];
-  const base = { XS: [0, 2, 3, 4], S: [3, 5, 6, 8], M: [4, 6, 8, 10], L: [2, 4, 6, 7], XL: [0, 1, 2, 3] }[talla];
+  const base = { S: [3, 5, 6, 8], M: [4, 6, 8, 10], L: [2, 4, 6, 7], XL: [0, 1, 2, 3], XXL: [1, 2, 3, 4] }[talla];
   return base[h % base.length];
 }
 
@@ -45,10 +45,8 @@ productos.forEach((p, i) => {
   p.colores.forEach((slugColor) => {
     const colId = colores.findIndex((c) => c.slug === slugColor) + 1;
     const nombreColor = colores[colId - 1].nombre;
-    const base = `/img/productos/${p.slug}-${slugColor}`;
-    imgFilas.push(fila([id, colId, `${base}-frente.svg`, `${p.nombre} en ${nombreColor.toLowerCase()}`, 0]));
-    imgFilas.push(fila([id, colId, `${base}-detalle.svg`, `Detalle de ${p.nombre} en ${nombreColor.toLowerCase()}`, 1]));
-    imgFilas.push(fila([id, colId, `${base}-textura.svg`, `Textura de la tela de ${p.nombre}`, 2]));
+    imgFilas.push(fila([id, colId, `/img/fotos/${p.imagen}.webp`, `${p.nombre} en ${nombreColor.toLowerCase()}`, 0]));
+    imgFilas.push(fila([id, colId, `/img/fotos/${p.imagen}-512.webp`, `Vista reducida de ${p.nombre}`, 1]));
     TALLAS.forEach((t) => {
       const sku = `VAE-${String(id).padStart(3, '0')}-${slugColor.split('-').map((s) => s[0]).join('').toUpperCase()}-${t}`;
       varFilas.push(fila([varId++, id, colId, t, sku, stockPara(sku, t)]));
