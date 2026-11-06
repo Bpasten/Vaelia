@@ -2,3 +2,6 @@ node_modules/
 .env
 *.log
 .DS_Store
+
+# Pruebas: credenciales de la base de pruebas
+.env.test
