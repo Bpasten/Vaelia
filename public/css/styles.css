@@ -230,7 +230,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 
 /* Carrito */
 .carrito-item { display: grid; grid-template-columns: 84px 1fr auto; gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--linea-suave); }
-.carrito-item__img { width: 84px; aspect-ratio: 4 / 5; object-fit: cover; background: var(--beige-lino); }
+.carrito-item__img { width: 84px; aspect-ratio: 2 / 3; object-fit: contain; background: var(--beige-lino); }
 .carrito-item__nombre { font: 500 19px/1.2 var(--serif); }
 .carrito-item__nombre a:hover { color: var(--dorado-texto); }
 .carrito-item__variante { font-size: 12px; color: var(--tinta-tenue); margin: 4px 0 12px; }
@@ -249,9 +249,6 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .carrito-vacio h3 { font-size: 28px; }
 .carrito-vacio p { color: var(--tinta-tenue); font-size: 14px; max-width: 280px; }
 
-.envio-gratis { font-size: 12px; color: var(--tinta-suave); margin-bottom: 16px; }
-.envio-gratis__barra { height: 3px; background: var(--linea); margin-top: 8px; overflow: hidden; }
-.envio-gratis__barra span { display: block; height: 100%; background: var(--dorado); transition: width 400ms ease; }
 .fila-total { display: flex; justify-content: space-between; align-items: baseline; font-size: 14px; color: var(--tinta-suave); padding: 4px 0; }
 .fila-total--grande { font-size: 15px; color: var(--tinta); font-weight: 600; padding-top: 12px; margin-top: 8px; border-top: 1px solid var(--linea-suave); }
 .fila-total--grande strong { font: 600 26px/1 var(--serif); }
@@ -339,8 +336,8 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .grilla-productos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 36px 24px; }
 .grilla-productos--3 { grid-template-columns: repeat(3, 1fr); }
 .tarjeta { display: grid; gap: 14px; align-content: start; }
-.tarjeta__img { position: relative; display: block; overflow: hidden; background: var(--beige-lino); aspect-ratio: 4 / 5; }
-.tarjeta__img img { width: 100%; height: 100%; object-fit: cover; transition: transform 700ms cubic-bezier(.2, .7, .2, 1), opacity 240ms ease; }
+.tarjeta__img { position: relative; display: block; overflow: hidden; background: var(--beige-lino); aspect-ratio: 2 / 3; }
+.tarjeta__img img { width: 100%; height: 100%; object-fit: contain; transition: transform 700ms cubic-bezier(.2, .7, .2, 1), opacity 240ms ease; }
 .tarjeta:hover .tarjeta__img img { transform: scale(1.035); }
 .tarjeta__sello { position: absolute; left: 12px; top: 12px; background: var(--marfil); padding: 6px 10px; font: 600 10px/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--tinta-suave); }
 .tarjeta__info { display: grid; gap: 4px; }
@@ -467,11 +464,13 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .ficha { display: grid; grid-template-columns: 1.15fr 1fr; gap: clamp(32px, 5vw, 80px); align-items: start; padding-bottom: 32px; }
 .galeria { display: grid; grid-template-columns: 84px 1fr; gap: 16px; position: sticky; top: calc(var(--alto-cabecera) + 24px); }
 .galeria__miniaturas { display: grid; gap: 12px; align-content: start; }
-.galeria__miniaturas button { aspect-ratio: 4 / 5; overflow: hidden; background: var(--beige-lino); outline: 1px solid transparent; outline-offset: 2px; transition: outline-color var(--transicion); }
+.galeria__miniaturas button { aspect-ratio: 2 / 3; overflow: hidden; background: var(--beige-lino); outline: 1px solid transparent; outline-offset: 2px; transition: outline-color var(--transicion); }
 .galeria__miniaturas button[aria-current="true"] { outline-color: var(--verde-bosque); }
-.galeria__miniaturas img { width: 100%; height: 100%; object-fit: cover; }
-.galeria__principal { position: relative; background: var(--beige-lino); aspect-ratio: 4 / 5; overflow: hidden; }
-.galeria__principal img { width: 100%; height: 100%; object-fit: cover; }
+.galeria__miniaturas img { width: 100%; height: 100%; object-fit: contain; }
+.galeria__principal { position: relative; background: var(--beige-lino); aspect-ratio: 2 / 3; overflow: hidden; cursor: zoom-in; }
+.galeria__principal img { width: 100%; height: 100%; object-fit: contain; transition: transform 120ms ease-out; transform-origin: center; }
+.galeria__principal--zoom { cursor: zoom-in; }
+.galeria__principal--zoom img { object-fit: contain; }
 .ficha__info { display: grid; gap: 22px; padding-top: 4px; }
 .ficha__info h1 { font-size: clamp(36px, 3.6vw, 48px); }
 .ficha__precio { font: 500 26px/1 var(--serif); color: var(--tinta); margin-top: -8px; }
@@ -647,7 +646,7 @@ textarea.control { height: auto; min-height: 90px; padding: 14px 16px; resize: v
 .resumen__items { margin: 12px 0 18px; max-height: 360px; overflow-y: auto; }
 .resumen-item { display: grid; grid-template-columns: 64px 1fr auto; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--linea-suave); }
 .resumen-item__img { position: relative; }
-.resumen-item__img img { width: 64px; aspect-ratio: 4 / 5; object-fit: cover; background: var(--beige-lino); }
+.resumen-item__img img { width: 64px; aspect-ratio: 2 / 3; object-fit: contain; background: var(--beige-lino); }
 .resumen-item__img span { position: absolute; top: -7px; right: -7px; min-width: 22px; height: 22px; border-radius: 11px; background: var(--taupe); color: #fff; font: 600 11px/22px var(--sans); text-align: center; padding: 0 5px; }
 .resumen-item strong { font: 500 17px/1.2 var(--serif); display: block; }
 .resumen-item small { font-size: 12px; color: var(--tinta-tenue); }
@@ -691,7 +690,7 @@ textarea.control { height: auto; min-height: 90px; padding: 14px 16px; resize: v
 .pedido-fila { border: 1px solid var(--linea-suave); background: var(--marfil-claro); margin-bottom: 12px; }
 .pedido-fila summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 56px 1fr auto auto 20px; gap: 18px; align-items: center; padding: 16px 20px; }
 .pedido-fila summary::-webkit-details-marker { display: none; }
-.pedido-fila summary img { width: 56px; aspect-ratio: 4 / 5; object-fit: cover; background: var(--beige-lino); }
+.pedido-fila summary img { width: 56px; aspect-ratio: 2 / 3; object-fit: contain; background: var(--beige-lino); }
 .pedido-fila summary strong { display: block; font-size: 14px; letter-spacing: .04em; }
 .pedido-fila summary small { font-size: 12px; color: var(--tinta-tenue); }
 .pedido-fila summary .i { width: 18px; height: 18px; color: var(--tinta-tenue); transition: transform var(--transicion); }

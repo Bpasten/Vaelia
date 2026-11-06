@@ -231,10 +231,6 @@ async function pintarCarrito() {
   const falta = Math.max(0, envio.gratisDesde - sub);
   pie.hidden = false;
   pie.innerHTML = `
-    <div class="envio-gratis">
-      ${falta > 0 ? `Te faltan <strong>${clp(falta)}</strong> para tener envío gratis.` : '¡Tu pedido tiene <strong>envío gratis</strong>!'}
-      <div class="envio-gratis__barra"><span style="width:${Math.min(100, (sub / envio.gratisDesde) * 100)}%"></span></div>
-    </div>
     <div class="fila-total"><span>Subtotal</span><span>${clp(sub)}</span></div>
     <div class="fila-total"><span>Envío</span><span>${falta > 0 ? `Desde ${clp(envio.rm)}` : 'Gratis'}</span></div>
     <div class="fila-total fila-total--grande"><span>Total estimado</span><strong>${clp(sub + (falta > 0 ? envio.rm : 0))}</strong></div>

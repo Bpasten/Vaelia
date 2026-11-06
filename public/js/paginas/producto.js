@@ -102,8 +102,6 @@ function pintar() {
         </div>
 
         <div class="confianza">
-          <div>${icono('camion')}<span>Envíos a todo Chile</span></div>
-          <div>${icono('cambio')}<span>Cambios y devoluciones</span></div>
           <div>${icono('escudo')}<span>Compra segura con Webpay</span></div>
         </div>
 
@@ -116,13 +114,6 @@ function pintar() {
             <summary>Materiales y cuidados ${icono('chevron')}</summary>
             <div class="contenido"><p><strong>Composición:</strong> ${esc(producto.materiales)}</p><p><strong>Cuidados:</strong> ${esc(producto.cuidados)}</p></div>
           </details>
-          <details>
-            <summary>Envíos y devoluciones ${icono('chevron')}</summary>
-            <div class="contenido">
-              <p>Despachamos a todo Chile en 2 a 5 días hábiles desde ${clp(reglasEnvio.rm)}. Envío gratis sobre ${clp(reglasEnvio.gratisDesde)}, o retiro sin costo en nuestro showroom de Providencia.</p>
-              <p>Tienes 30 días para cambios. La prenda debe estar sin uso y con su etiqueta.</p>
-            </div>
-          </details>
         </div>
       </div>
     </div>`;
@@ -134,6 +125,28 @@ function pintarMigas() {
     <li><a href="/coleccion?categoria=${encodeURIComponent(producto.categoria.slug)}">${esc(producto.categoria.nombre)}</a></li>
     <li aria-current="page">${esc(producto.nombre)}</li>`);
 }
+
+// Zoom al pasar el cursor sobre la foto principal (estilo tienda de moda)
+const ZOOM = 2.2;
+contenedor.addEventListener('pointermove', (e) => {
+  const zona = e.target.closest?.('.galeria__principal');
+  if (!zona) return;
+  const img = zona.querySelector('img');
+  const r = zona.getBoundingClientRect();
+  const x = Math.min(100, Math.max(0, ((e.clientX - r.left) / r.width) * 100));
+  const y = Math.min(100, Math.max(0, ((e.clientY - r.top) / r.height) * 100));
+  img.style.transformOrigin = `${x}% ${y}%`;
+  img.style.transform = `scale(${ZOOM})`;
+  zona.classList.add('galeria__principal--zoom');
+});
+contenedor.addEventListener('pointerout', (e) => {
+  const zona = e.target.closest?.('.galeria__principal');
+  if (!zona || zona.contains(e.relatedTarget)) return;
+  const img = zona.querySelector('img');
+  img.style.transform = '';
+  img.style.transformOrigin = 'center';
+  zona.classList.remove('galeria__principal--zoom');
+});
 
 contenedor.addEventListener('click', (e) => {
   const b = e.target.closest('button');
