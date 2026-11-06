@@ -293,7 +293,14 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .hero__grid { display: grid; grid-template-columns: 1fr 1.05fr; align-items: center; gap: clamp(32px, 6vw, 96px); padding-top: 56px; padding-bottom: 56px; }
 .hero__arco { position: relative; justify-self: center; width: min(400px, 100%); }
 .hero__arco::before { content: ''; position: absolute; inset: -14px; border: 1px solid rgba(180, 154, 106, .55); border-radius: 999px 999px 4px 4px; }
-.hero__arco img { width: 100%; aspect-ratio: 4 / 5.2; object-fit: cover; border-radius: 999px 999px 2px 2px; box-shadow: 0 40px 80px -40px rgba(0, 0, 0, .8); }
+.hero__slides { position: relative; aspect-ratio: 4 / 5.2; overflow: hidden; border-radius: 999px 999px 2px 2px; background: var(--beige-lino); box-shadow: 0 40px 80px -40px rgba(0, 0, 0, .8); }
+.hero__slide { position: absolute; inset: 0; display: block; opacity: 0; transition: opacity 900ms ease; pointer-events: none; }
+.hero__slide.is-activa { opacity: 1; pointer-events: auto; }
+.hero__slide img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.hero__puntos { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.hero__puntos button { width: 9px; height: 9px; border-radius: 50%; padding: 0; border: 1px solid var(--beige-lino); background: transparent; cursor: pointer; }
+.hero__puntos button[aria-pressed="true"] { background: var(--beige-lino); }
+@media (prefers-reduced-motion: reduce) { .hero__slide { transition: none; } }
 .hero__etiqueta {
   position: absolute; left: -28px; bottom: 56px; background: var(--marfil); color: var(--tinta);
   padding: 14px 18px; box-shadow: var(--sombra); display: grid; gap: 2px;
