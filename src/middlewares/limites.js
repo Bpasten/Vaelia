@@ -4,6 +4,8 @@ const rateLimit = require('express-rate-limit');
 const base = {
   standardHeaders: 'draft-7',
   legacyHeaders: false,
+  // En las pruebas automáticas (NODE_ENV=test) no se limita, para poder crear muchas cuentas
+  skip: () => process.env.NODE_ENV === 'test',
   handler: (_req, res, _next, opciones) => res.status(opciones.statusCode).json({ error: opciones.message }),
 };
 

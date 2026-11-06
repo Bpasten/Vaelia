@@ -184,3 +184,17 @@ Las prendas son **ilustraciones SVG de demostración** generadas por `scripts/ge
 Cuando tengan fotografías reales, súbanlas a `public/img/productos/` y actualicen las URLs en la tabla `producto_imagenes`; no hay que tocar el código.
 
 Tipografías Cormorant Garamond y Montserrat: licencia SIL Open Font License.
+
+## Pruebas
+
+Las pruebas usan una **base separada** (nombre terminado en `_test`). Nunca usan el `.env` de producción.
+
+1. Crea la base de pruebas (en TiDB, en un cluster o branch aparte) y un usuario con permisos sobre ella.
+2. Copia `.env.test.example` como `.env.test` y completa `TEST_DB_*`.
+3. Carga el esquema y los datos de prueba: `DB_NAME=vaelia_test npm run db:setup` (con `DB_USER`, `DB_PASSWORD`, `DB_HOST` apuntando a la base de pruebas).
+4. Ejecuta:
+   - `npm run test:unitarias` — validaciones, envíos y sesiones (no necesita base).
+   - `npm run test:integracion` — registro, login, Google (Supabase simulado), catálogo, carrito, compra con Webpay simulado, newsletter.
+   - `npm test` — todo.
+
+Webpay y Supabase se simulan dentro de las pruebas: no se llama a Transbank ni a Google.

@@ -8,7 +8,10 @@
     "dev": "node --watch server.js",
     "db:setup": "node scripts/db-setup.js",
     "seed:generar": "node scripts/generar-seed.js",
-    "imagenes:generar": "node scripts/generar-imagenes.js"
+    "imagenes:generar": "node scripts/generar-imagenes.js",
+    "test": "node --test --test-concurrency=1 \"test/**/*.test.js\"",
+    "test:unitarias": "node --test \"test/unitarias/*.test.js\"",
+    "test:integracion": "node --test --test-concurrency=1 \"test/integracion/*.test.js\""
   },
   "license": "UNLICENSED",
   "dependencies": {
