@@ -1,11 +1,23 @@
 {
   "functions": {
-    "api/index.js": { "includeFiles": "public/**" }
+    "api/index.js": {
+      "includeFiles": "public/**"
+    }
   },
   "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/api/index" }
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/api/index"
+    }
   ],
   "crons": [
-    { "path": "/api/cron/liberar-stock", "schedule": "0 3 * * *" }
+    {
+      "path": "/api/cron/liberar-stock",
+      "schedule": "0 3 * * *"
+    }
   ]
 }
