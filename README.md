@@ -1,51 +1,32 @@
 # VAELIA · Vístete para ti.
 
+Tienda en línea de vestuario para mujeres. Frontend en HTML, CSS y JavaScript sin frameworks; backend en Node.js con Express 5; base de datos compatible con MySQL; pagos con Webpay Plus (Transbank).
+
 ```
-Navegador (HTML · CSS · JS)  ──HTTPS / JSON──▶  Node.js + Express (API REST)  ──▶  MySQL
+Navegador (HTML · CSS · JS)  ──HTTPS / JSON──▶  Node.js + Express (API REST)  ──▶  MySQL / TiDB
                                                           │
                                                           └──▶  Webpay Plus · Transbank (transbank-sdk)
 ```
 
-| Instrucción | Dónde está |
-|---|---|
-| 1. Landing con colores y tipografía de la marca | `public/index.html`, `public/css/styles.css` (verde bosque, salvia, café corteza, taupe, beige lino, marfil, dorado viejo · Cormorant Garamond + Montserrat) |
-| 2. Catálogo integrado | `public/coleccion.html`, `public/producto.html` ← `GET /api/productos` desde MySQL, con filtros por categoría, color, talla, ocasión, búsqueda, orden y paginación |
-| 3. Carrito de compras | Carrito lateral en todas las páginas (`public/js/carrito.js`, `public/js/ui.js`). El servidor revalida precios y stock antes de pagar |
-| 4. Webpay Plus (SDK) | `transbank-sdk` en ambiente de **integración** (`src/config/transbank.js`, `src/controllers/checkout.controller.js`, `src/controllers/webpay.controller.js`) |
-| 5. HTML, CSS, JS, Node, Express, MySQL | Sin frameworks de frontend; backend Express 5 + mysql2 |
-| Login y registro | `public/cuenta.html` (diseño entregado), accesible desde el **ícono de cuenta del navbar**. Con sesión, el ícono abre un menú: Mis pedidos, Mis datos, Mi dirección, Cerrar sesión |
-
----
-
 ## 1. Requisitos
 
-- Node.js 18 o superior
-- MySQL 8 
+- Node.js 26 (versión fijada en `package.json`)
+- MySQL 8 o TiDB Cloud (compatible con el protocolo MySQL)
 
-## 2. Instalación
+## 2. Instalación y ejecución local
 
 ```bash
 npm install
+cp .env.example .env     # completa las variables
+npm run db:setup         # crea las tablas y carga datos de ejemplo (borra y recrea las tablas)
+npm run dev              # servidor con recarga automática
 ```
 
-> También puedes importar `database/schema.sql` y luego `database/seed.sql` desde MySQL Workbench.
-> `db:setup` **borra y recrea** las tablas.
+Abre **http://localhost:3000**. Para producción usa `npm start`.
 
-Levanta el servidor:
+## 3. Pagos con Webpay (ambiente de integración)
 
-```bash
-npm run dev        # con recarga automática
-# o
-npm start
-```
-
-Abre **http://localhost:3000**
-
-**Cuenta de prueba:** `camila@test.cl` / `Vaelia2026`
-
-## 3. Probar el pago con Webpay (ambiente de integración)
-
-No se cobra dinero real. Al pagar, la tienda te lleva al formulario de prueba de Transbank:
+Mientras `TBK_ENV=integration` (valor por defecto) no se cobra dinero real. El checkout usa las credenciales públicas de prueba de Transbank.
 
 | Caso | Tarjeta | CVV | Resultado |
 |---|---|---|---|
@@ -53,148 +34,128 @@ No se cobra dinero real. Al pagar, la tienda te lleva al formulario de prueba de
 | Rechazado | Mastercard `5186 0595 5959 0568` | `123` | Rechazada |
 
 Fecha de expiración: cualquiera futura. Si pide autenticación: RUT `11.111.111-1`, clave `123`.
-(Estos datos también aparecen en el paso 3 del checkout mientras `TBK_ENV=integration`.)
 
-Casos que maneja el retorno (`/api/webpay/retorno`, acepta GET y POST):
+Retorno desde Transbank (`/api/webpay/retorno`, acepta GET y POST):
 
 | Lo que pasó en Webpay | Llega | Resultado en Vaelia |
 |---|---|---|
-| Pagó | `token_ws` | `commit()` → si `AUTHORIZED`, `response_code = 0` y el monto y la orden coinciden → pedido **pagado** |
-| Anuló o hubo error en el formulario | `TBK_TOKEN` | Pedido cancelado, stock devuelto, **sin commit** |
+| Pagó | `token_ws` | `commit()`; si `AUTHORIZED`, `response_code = 0` y monto y orden coinciden → pedido **pagado** |
+| Anuló o hubo error en el formulario | `TBK_TOKEN` | Pedido cancelado, stock devuelto, sin commit |
 | Se le acabó el tiempo | `TBK_ORDEN_COMPRA` | Pedido cancelado, stock devuelto |
-| Cerró la pestaña | — | A los 30 min el servidor libera el stock (si vuelve tarde, no se confirma y Transbank reversa) |
+| Cerró la pestaña | — | A los 30 min el servidor libera el stock; si vuelve tarde, no se confirma y Transbank reversa |
 
-Además se evita el doble commit si alguien recarga la página de retorno.
+Recargar la página de retorno no genera un segundo commit.
 
 ## 4. Flujo de compra
 
-1. **Catálogo** → elige color y talla (las tallas sin stock aparecen tachadas).
-2. **Carrito** → aumentar, disminuir o eliminar; barra de "te faltan $X para envío gratis".
-3. **Checkout** en 3 pasos: Datos → Envío (domicilio o retiro) → Pago. Se puede comprar **como invitada**; con sesión se precargan los datos y la dirección.
-4. El servidor **recalcula precios desde MySQL**, **reserva el stock** en una transacción con bloqueo de filas y crea la transacción en Webpay.
-5. **Confirmación** con el comprobante que pide Transbank: comercio, orden de compra, monto, código de autorización, fecha, tipo de pago, cuotas y últimos 4 dígitos.
-6. **Mi cuenta** → historial de pedidos y seguimiento con fecha de cada cambio de estado.
+1. **Catálogo:** elige color y talla. Las tallas sin stock aparecen tachadas.
+2. **Carrito:** aumentar, disminuir o eliminar productos. El navegador solo guarda referencias.
+3. **Checkout** en 3 pasos: Datos → Envío (domicilio o retiro) → Pago. Se puede comprar como invitada; con sesión se precargan los datos y la dirección.
+4. El servidor **recalcula precios desde la base**, **reserva el stock** en una transacción con bloqueo de filas y crea la transacción en Webpay.
+5. **Confirmación** con el comprobante de Transbank: comercio, orden, monto, código de autorización, fecha, tipo de pago, cuotas y últimos 4 dígitos.
+6. **Mi cuenta:** historial de pedidos y seguimiento con la fecha de cada cambio de estado.
 
-Reglas de despacho (configurables en `.env`): RM $3.990 · regiones $5.990 · gratis desde $60.000 · retiro en showroom gratis.
+Reglas de despacho (configurables en `.env`): RM, regiones y umbral de envío gratis; retiro en showroom sin costo.
 
 ## 5. Estructura
 
 ```
-server.js                     Arranque, verificación de MySQL y liberación de pagos abandonados
+server.js                     Arranque, verificación de la base y liberación de pagos abandonados
 src/
   app.js                      Express: helmet, CORS, cookies, API y archivos estáticos
-  config/  env.js · db.js · transbank.js
-  routes/  index.js           Todas las rutas de la API
+  config/   env.js · db.js · transbank.js
+  routes/   index.js          Todas las rutas de la API
   controllers/                productos · auth · cuenta · checkout · webpay · pedidos · newsletter
   services/                   pedidos.service.js (stock y estados) · envio.service.js
   middlewares/                auth (JWT en cookie httpOnly) · limites (rate limit) · errores
-  utils/                      validar (RUT, correo, celular, dirección) · estados · http-error
+  utils/                      validar · estados · http-error
+api/index.js                  Punto de entrada para Vercel (serverless)
 database/
-  schema.sql                  Tablas: usuarios, direcciones, categorias, colores, productos,
-                              producto_imagenes, variantes, pedidos, pedido_items,
-                              pedido_historial, pagos, suscriptores
-  seed.sql                    Datos iniciales (generado desde catalogo.js)
+  schema.sql                  Esquema de tablas
+  seed.sql                    Datos de ejemplo
   catalogo.js                 Fuente del catálogo
+  migracion-*.sql · carga-*.sql   Migraciones y carga del catálogo (TiDB y MySQL)
 scripts/
   db-setup.js                 npm run db:setup
   generar-seed.js             npm run seed:generar
-  generar-imagenes.js         npm run imagenes:generar
+test/                         Pruebas unitarias e de integración
 public/
-  index.html · coleccion.html · producto.html · cuenta.html · checkout.html
-  confirmacion.html · mi-cuenta.html · 404.html
+  *.html                      Páginas (inicio, colección, producto, cuenta, checkout, confirmación, mi cuenta, 404)
   css/styles.css
   js/api.js · carrito.js · ui.js · paginas/*.js
-  img/icons.svg (incluye la rama de la marca) · img/marca/ · img/productos/
-  fonts/                      Cormorant Garamond y Montserrat locales (sin depender de Google)
+  img/marca/ · img/fotos/ · img/productos/ · img/icons.svg
+  fonts/                      Cormorant Garamond y Montserrat (locales)
 ```
 
 ## 6. API REST
 
 | Método | Ruta | Descripción |
 |---|---|---|
-| GET | `/api/productos` | Listado (`categoria`, `color`, `talla`, `ocasion`, `q`, `orden`, `pagina`, `por_pagina`) |
-| GET | `/api/productos/destacados` | 4 destacados para la landing |
+| GET | `/api/productos` | Listado con filtros: `categoria`, `color`, `talla`, `ocasion`, `q`, `orden`, `pagina`, `por_pagina` |
+| GET | `/api/productos/destacados` | Productos destacados para la portada |
 | GET | `/api/productos/filtros` | Categorías, colores, tallas y ocasiones |
 | GET | `/api/productos/:slug` | Ficha con variantes, stock e imágenes por color |
 | POST | `/api/auth/registro` · `/api/auth/login` · `/api/auth/logout` | Sesión con JWT en cookie httpOnly |
 | GET | `/api/auth/yo` | Sesión actual |
 | GET/PUT | `/api/cuenta` · PUT `/api/cuenta/direccion` | Datos y dirección (requiere sesión) |
 | GET | `/api/cuenta/pedidos` · `/api/cuenta/pedidos/:codigo` | Historial y seguimiento |
-| GET | `/api/checkout/config` | Regiones, reglas de envío, ambiente Webpay |
+| GET | `/api/checkout/config` | Regiones y reglas de envío |
 | POST | `/api/checkout/cotizar` | Revalida el carrito y calcula envío y total |
 | POST | `/api/checkout` | Crea el pedido y la transacción Webpay → `{ url, token }` |
 | GET/POST | `/api/webpay/retorno` | Retorno de Transbank (commit) |
 | GET | `/api/pedidos/:publicId` | Resultado para la página de confirmación |
-| POST | `/api/newsletter` | "Mantente cerca" |
-| GET | `/api/salud` | Estado del servidor y MySQL |
+| POST | `/api/newsletter` | Suscripción al boletín |
+| GET | `/api/salud` | Estado del servidor y de la base |
+| GET | `/api/cron/liberar-stock` | Libera stock de pedidos abandonados (requiere `CRON_SECRET`) |
 
-## 7. Seguridad (informe 3.2 y 5.5)
+## 7. Seguridad
 
 | Control | Implementación |
 |---|---|
 | Contraseñas | `bcryptjs` (costo 12). Mismo tiempo de respuesta si el correo no existe |
-| Sesión | `jsonwebtoken` en cookie `httpOnly`, `SameSite=Lax`, `Secure` en producción |
+| Sesión | JWT en cookie `httpOnly`, `SameSite=Lax`, `Secure` en producción |
 | Cabeceras | `helmet` con CSP estricta (`form-action` solo permite enviar a Webpay) |
-| Abuso | `express-rate-limit`: login 10 fallidos / 15 min, registro 5 / hora, checkout 15 / 15 min |
-| Secretos | `dotenv`; `.env` está en `.gitignore`. El servidor no arranca sin `JWT_SECRET` |
-| Validación | En navegador y de nuevo en servidor (RUT con dígito verificador, celular, correo, dirección) |
-| SQL | Consultas parametrizadas (`?`) con `mysql2` |
-| Precios y stock | Siempre desde MySQL; el carrito del navegador solo es referencia |
+| Abuso | `express-rate-limit` en login, registro y checkout |
+| Secretos | Variables de entorno (`dotenv`). `.env` está en `.gitignore`. El servidor no arranca sin `JWT_SECRET` |
+| Validación | En el navegador y de nuevo en el servidor (RUT con dígito verificador, celular, correo, dirección) |
+| SQL | Consultas parametrizadas |
+| Precios y stock | Siempre desde la base de datos |
 | Pago | Pedido pagado solo con respuesta `AUTHORIZED`, `response_code 0`, monto y orden iguales |
-| Errores | Mensajes claros sin stack, SQL ni credenciales |
+| Errores | Mensajes sin stack trace, SQL ni credenciales |
 
-## 8. Trazabilidad con las historias de usuario
+## 8. Paso a producción
 
-| HU | Estado |
-|---|---|
-| HU07 Catálogo con disponibilidad | ✔ Datos desde MySQL |
-| HU08 Ficha con imágenes, precio, tallas y stock | ✔ |
-| HU09 Buscar y filtrar | ✔ Búsqueda, categoría, color, talla, ocasión y orden |
-| HU10 · HU11 Carrito | ✔ Persistente; aumentar, disminuir, eliminar |
-| HU12 Compra sin cuenta / reutilizar datos con sesión | ✔ |
-| HU13 Validar contacto y despacho | ✔ Domicilio o retiro |
-| HU14 Registrar pago y mostrar confirmación o error | ✔ Webpay Plus, tabla `pagos` |
-| HU06 Bloquear compras sobre el stock | ✔ Reserva con bloqueo de filas |
-| HU17 Registro opcional, correo no duplicado | ✔ |
-| HU18 Login con credenciales válidas e inválidas | ✔ |
-| HU19 Actualizar datos personales | ✔ Mi cuenta |
-| HU20 Historial de pedidos | ✔ |
-| HU21 Estado vigente y última actualización | ✔ `pedido_historial` |
-| HU01–HU05, HU15, HU16 Panel administrativo | Pendiente. Ya existen el rol `admin` en `usuarios` y el middleware `requiereAdmin` |
-
-## 9. Paso a producción
-
-1. Pide a Transbank tu **código de comercio** y **API Key** de producción (se entregan después de su proceso de validación de la integración).
-2. En `.env`:
+1. Obtén el **código de comercio** y la **API Key** de producción de Transbank.
+2. Configura las variables en el hosting (en Vercel: *Settings → Environment Variables*):
    ```
    NODE_ENV=production
-   APP_URL=https://www.vaelia.cl
-   TRUST_PROXY=1            # si el hosting usa proxy HTTPS
+   APP_URL=https://tu-dominio
    TBK_ENV=production
    TBK_COMMERCE_CODE=...
    TBK_API_KEY=...
+   JWT_SECRET=...            # mínimo 32 caracteres
+   CRON_SECRET=...
+   DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_SSL=true
    ```
-3. HTTPS es obligatorio (el servidor se niega a arrancar en producción con `APP_URL` sin https).
-4. Configura respaldos de MySQL y restringe su acceso solo desde la aplicación.
+3. HTTPS es obligatorio: el servidor no arranca en producción con `APP_URL` sin `https://`.
+4. Configura respaldos de la base y restringe su acceso solo a la aplicación.
 
-## 10. Imágenes
+## 9. Imágenes
 
-Las fotos de marca (bosque, bolsa, etiqueta, tarjeta, sello y papel de seda) salen del brand board de Vaelia.
-Las prendas son **ilustraciones SVG de demostración** generadas por `scripts/generar-imagenes.js` (una por color, con vista frontal, detalle y textura).
-Cuando tengan fotografías reales, súbanlas a `public/img/productos/` y actualicen las URLs en la tabla `producto_imagenes`; no hay que tocar el código.
+- `public/img/fotos/`: fotografías de producto en formato WebP (versión completa y versión de 512 px para tarjetas).
+- `public/img/marca/`: logo y fotos de marca (bolsa, etiqueta, tarjeta de agradecimiento, sello y papel de seda).
+- Para cambiar una foto, reemplaza el archivo con el mismo nombre; no hace falta tocar el código.
 
-Tipografías Cormorant Garamond y Montserrat: licencia SIL Open Font License.
+## 10. Pruebas
 
-## Pruebas
+Las pruebas usan una **base separada** cuyo nombre termina en `_test`. Nunca usan el `.env` de producción.
 
-Las pruebas usan una **base separada** (nombre terminado en `_test`). Nunca usan el `.env` de producción.
-
-1. Crea la base de pruebas (en TiDB, en un cluster o branch aparte) y un usuario con permisos sobre ella.
+1. Crea una base de pruebas (en TiDB, en un cluster o branch aparte) y un usuario con permisos sobre ella.
 2. Copia `.env.test.example` como `.env.test` y completa `TEST_DB_*`.
-3. Carga el esquema y los datos de prueba: `DB_NAME=vaelia_test npm run db:setup` (con `DB_USER`, `DB_PASSWORD`, `DB_HOST` apuntando a la base de pruebas).
+3. Carga el esquema y los datos: `DB_NAME=<nombre>_test npm run db:setup` (con `DB_USER`, `DB_PASSWORD` y `DB_HOST` apuntando a la base de pruebas).
 4. Ejecuta:
-   - `npm run test:unitarias` — validaciones, envíos y sesiones (no necesita base).
-   - `npm run test:integracion` — registro, login, catálogo, carrito, compra con Webpay simulado, newsletter.
-   - `npm test` — todo.
+   - `npm run test:unitarias`: validaciones, envíos y sesiones (no necesita base).
+   - `npm run test:integracion`: registro, login, catálogo, carrito, compra con Webpay simulado y newsletter.
+   - `npm test`: todo.
 
 Webpay se simula dentro de las pruebas: no se llama a Transbank.
