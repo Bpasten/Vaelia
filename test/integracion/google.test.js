@@ -32,6 +32,20 @@ describe('inicio de sesión con Google (Supabase)', () => {
     assert.equal(r.datos.google, true);
   });
 
+  test('no expone la URL de Supabase al navegador', async () => {
+    const r = await h.api('/auth/proveedores');
+    assert.equal(r.datos.supabaseUrl, undefined);
+    assert.equal(JSON.stringify(r.datos).includes(process.env.SUPABASE_URL), false);
+  });
+
+  test('/auth/google redirige a Supabase sin mostrar la URL en el frontend', async () => {
+    const r = await fetch(`${h.base()}/api/auth/google`, { redirect: 'manual' });
+    assert.equal(r.status, 302);
+    const destino = new URL(r.headers.get('location'));
+    assert.equal(destino.origin, process.env.SUPABASE_URL);
+    assert.equal(destino.searchParams.get('provider'), 'google');
+  });
+
   test('un token válido crea la cuenta en la base con contraseña NULL', async () => {
     const email = h.unico('google');
     respuestaSupabase = () => new Response(JSON.stringify(usuarioSupabase(email)), { status: 200 });

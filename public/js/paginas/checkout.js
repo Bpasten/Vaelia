@@ -16,7 +16,7 @@ const alertaGeneral = form.querySelector('[data-alerta-general]');
 const CONTACTO = ['nombre', 'apellido', 'email', 'telefono', 'rut'];
 const DIRECCION = ['region', 'comuna', 'calle', 'depto', 'referencia'];
 
-let config = { envio: { rm: 3990, regiones: 5990, gratisDesde: 60000, retiro: '' }, regiones: [], integracion: true };
+let config = { envio: { rm: 3990, regiones: 5990, gratisDesde: 60000, retiro: '' }, regiones: [] };
 let cotizacion = null;
 let pasoActual = 1;
 let usuario = null;
@@ -245,7 +245,6 @@ async function iniciar() {
   const sel = campo('despacho.region');
   sel.insertAdjacentHTML('beforeend', config.regiones.map((r) => `<option value="${esc(r)}">${esc(r)}</option>`).join(''));
   form.querySelector('[data-retiro-texto]').textContent = config.envio.retiro;
-  form.querySelector('[data-nota-integracion]').hidden = !config.integracion;
 
   usuario = await obtenerSesion();
   if (usuario) {

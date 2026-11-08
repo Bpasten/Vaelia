@@ -26,7 +26,7 @@ if (tokenGoogle) {
 api('/auth/proveedores').then((p) => {
   if (!p.google) return;
   const boton = document.querySelector('[data-google]');
-  boton.href = `${p.supabaseUrl}/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(`${location.origin}/cuenta`)}`;
+  boton.href = '/api/auth/google';
   boton.hidden = false;
   document.querySelector('[data-google-sep]').hidden = false;
 }).catch(() => {});

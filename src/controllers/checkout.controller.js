@@ -9,7 +9,7 @@ const HttpError = require('../utils/http-error');
 const v = require('../utils/validar');
 const pedidos = require('../services/pedidos.service');
 const { resumenReglas } = require('../services/envio.service');
-const { webpay, urlRetorno, esIntegracion } = require('../config/transbank');
+const { webpay, urlRetorno } = require('../config/transbank');
 const { guardarDireccionPrincipal } = require('./cuenta.controller');
 
 function leerDespacho(body) {
@@ -20,7 +20,7 @@ function leerDespacho(body) {
 
 /** GET /api/checkout/config — reglas de envío y regiones para el formulario */
 function configuracion(_req, res) {
-  res.json({ envio: resumenReglas(), regiones: v.REGIONES, integracion: esIntegracion });
+  res.json({ envio: resumenReglas(), regiones: v.REGIONES });
 }
 
 /** POST /api/checkout/cotizar — revalida el carrito y calcula envío y total */

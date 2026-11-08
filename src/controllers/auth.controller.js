@@ -81,9 +81,18 @@ async function yo(req, res) {
   res.json({ usuario: publico(u) });
 }
 
-/** GET /api/auth/proveedores — métodos de acceso disponibles */
+/** GET /api/auth/proveedores — métodos de acceso disponibles (sin datos de configuración) */
 function proveedores(_req, res) {
-  res.json({ google: Boolean(config.supabase.url && config.supabase.clave), supabaseUrl: config.supabase.url || null });
+  res.json({ google: Boolean(config.supabase.url && config.supabase.clave) });
+}
+
+/** GET /api/auth/google — redirige a Google vía Supabase; la URL de Supabase nunca llega al navegador */
+function iniciarGoogle(req, res) {
+  if (!config.supabase.url || !config.supabase.clave) throw new HttpError(404, 'Inicio con Google no disponible.');
+  // Se usa APP_URL si está definido; si no, el host de la petición (evita redirecciones a otros dominios)
+  const origen = process.env.APP_URL ? config.appUrl : `${req.protocol}://${req.get('host')}`;
+  const destino = `${config.supabase.url}/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(`${origen}/cuenta`)}`;
+  res.redirect(302, destino);
 }
 
 /**
@@ -128,4 +137,4 @@ async function google(req, res) {
 }
 
 module.exports = {
-  proveedores, google, registro, login, logout, yo, publico };
+  proveedores, iniciarGoogle, google, registro, login, logout, yo, publico };
