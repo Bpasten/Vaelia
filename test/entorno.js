@@ -22,8 +22,6 @@ Object.assign(process.env, {
   DB_SSL: process.env.TEST_DB_SSL || 'false',
   DB_NAME: nombre,
   JWT_SECRET: 'secreto-solo-para-pruebas-vaelia-64-caracteres-o-mas-xxxxxxxxxxxxxxxx',
-  SUPABASE_URL: 'https://supabase.prueba.test',
-  SUPABASE_PUBLISHABLE_KEY: 'clave-de-prueba',
   TBK_ENV: 'integration',
 });
 

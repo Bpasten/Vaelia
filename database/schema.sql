@@ -32,7 +32,7 @@ CREATE TABLE usuarios (
   nombre          VARCHAR(60)  NOT NULL,
   apellido        VARCHAR(60)  NOT NULL,
   email           VARCHAR(120) NOT NULL,
-  password_hash   CHAR(60)     NULL,               -- bcrypt; NULL en cuentas creadas con Google
+  password_hash   CHAR(60)     NULL,               -- bcrypt; NULL si la cuenta no tiene contraseña
   telefono        VARCHAR(20)  NULL,
   rut             VARCHAR(12)  NULL,
   rol             ENUM('cliente','admin') NOT NULL DEFAULT 'cliente',

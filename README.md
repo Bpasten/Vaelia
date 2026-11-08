@@ -194,7 +194,7 @@ Las pruebas usan una **base separada** (nombre terminado en `_test`). Nunca usan
 3. Carga el esquema y los datos de prueba: `DB_NAME=vaelia_test npm run db:setup` (con `DB_USER`, `DB_PASSWORD`, `DB_HOST` apuntando a la base de pruebas).
 4. Ejecuta:
    - `npm run test:unitarias` — validaciones, envíos y sesiones (no necesita base).
-   - `npm run test:integracion` — registro, login, Google (Supabase simulado), catálogo, carrito, compra con Webpay simulado, newsletter.
+   - `npm run test:integracion` — registro, login, catálogo, carrito, compra con Webpay simulado, newsletter.
    - `npm test` — todo.
 
-Webpay y Supabase se simulan dentro de las pruebas: no se llama a Transbank ni a Google.
+Webpay se simula dentro de las pruebas: no se llama a Transbank.

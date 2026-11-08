@@ -11,7 +11,7 @@ describe('esquema de la base de datos', () => {
     for (const t of ['S', 'M', 'L', 'XL', 'XXL']) assert.ok(col.Type.includes(`'${t}'`), `falta ${t}`);
   });
 
-  test('password_hash puede ser NULL (cuentas de Google)', async () => {
+  test('password_hash admite NULL', async () => {
     const [col] = await h.query("SHOW COLUMNS FROM usuarios LIKE 'password_hash'");
     assert.equal(col.Null, 'YES');
   });

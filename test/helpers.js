@@ -62,4 +62,4 @@ async function variante(id) {
   return fila;
 }
 
-module.exports = { iniciar, cerrar, api, unico, crearCuenta, variante, query, CLAVE_VALIDA, base: () => base };
+module.exports = { iniciar, cerrar, api, unico, crearCuenta, variante, query, CLAVE_VALIDA };

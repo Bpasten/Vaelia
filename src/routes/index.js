@@ -30,9 +30,6 @@ r.post('/auth/registro', limiteRegistro, auth.registro);
 r.post('/auth/login', limiteLogin, auth.login);
 r.post('/auth/logout', auth.logout);
 r.get('/auth/yo', auth.yo);
-r.get('/auth/proveedores', auth.proveedores);
-r.get('/auth/google', auth.iniciarGoogle);
-r.post('/auth/google', limiteLogin, auth.google);
 
 // Mi cuenta
 r.get('/cuenta', requiereSesion, cuenta.perfil);

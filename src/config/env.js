@@ -35,11 +35,6 @@ const config = {
     apiKey: env.TBK_API_KEY || '',
   },
 
-  supabase: {
-    url: (env.SUPABASE_URL || '').replace(/\/$/, ''),
-    clave: env.SUPABASE_PUBLISHABLE_KEY || '',
-  },
-
   envio: {
     rm: Number(env.ENVIO_RM) || 3990,
     regiones: Number(env.ENVIO_REGIONES) || 5990,

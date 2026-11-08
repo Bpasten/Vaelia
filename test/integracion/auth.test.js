@@ -70,12 +70,6 @@ describe('inicio de sesión: lee la cuenta guardada', () => {
     assert.equal(r.datos.error, 'Correo o contraseña incorrectos.');
   });
 
-  test('una cuenta creada con Google no puede entrar con contraseña', async () => {
-    const email = h.unico('google');
-    await h.query("INSERT INTO usuarios (nombre, apellido, email, password_hash) VALUES ('Sofía', 'Mena', ?, NULL)", [email]);
-    const r = await h.api('/auth/login', { metodo: 'POST', cuerpo: { email, password: h.CLAVE_VALIDA } });
-    assert.equal(r.status, 401);
-  });
 });
 
 describe('sesión', () => {

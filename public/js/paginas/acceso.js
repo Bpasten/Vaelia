@@ -8,28 +8,6 @@ iniciarPagina({ cabecera: 'ninguna' });
 const params = new URLSearchParams(location.search);
 const volver = rutaSegura(params.get('volver'), '/mi-cuenta');
 
-// Retorno desde Google: Supabase entrega el access_token en el hash de la URL
-const tokenGoogle = new URLSearchParams(location.hash.slice(1)).get('access_token');
-if (tokenGoogle) {
-  history.replaceState(null, '', location.pathname + location.search);
-  api('/auth/google', { metodo: 'POST', cuerpo: { access_token: tokenGoogle } })
-    .then(() => location.replace(volver))
-    .catch((err) => {
-      const el = document.querySelector('#panel-ingresar [data-alerta]');
-      el.className = 'alerta alerta--error';
-      el.innerHTML = `${icono('alerta')}<span>${esc(err.message)}</span>`;
-      el.hidden = false;
-    });
-}
-
-// Botón de Google: solo aparece si el servidor tiene Supabase configurado
-api('/auth/proveedores').then((p) => {
-  if (!p.google) return;
-  const boton = document.querySelector('[data-google]');
-  boton.href = '/api/auth/google';
-  boton.hidden = false;
-  document.querySelector('[data-google-sep]').hidden = false;
-}).catch(() => {});
 const tabs = { ingresar: document.getElementById('tab-ingresar'), crear: document.getElementById('tab-crear') };
 const paneles = { ingresar: document.getElementById('panel-ingresar'), crear: document.getElementById('panel-crear') };
 
