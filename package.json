@@ -28,6 +28,7 @@
   },
   "private": true,
   "engines": {
-    "node": ">=18"
-  }
+    "node": "26.x"
+  },
+  "type": "commonjs"
 }
