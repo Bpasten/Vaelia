@@ -9,7 +9,7 @@ let webpayFalla = false;
 
 const RUT = '11.111.111-1';
 const contacto = (email) => ({ nombre: 'Ana', apellido: 'Pérez', email, telefono: '+56 9 1234 5678', rut: RUT });
-const retiro = { tipo: 'retiro' };
+const domicilio = { region: 'Metropolitana de Santiago', comuna: 'Providencia', calle: 'Av. Providencia 1234' };
 
 let variante;
 
@@ -48,7 +48,7 @@ describe('compra como invitada', () => {
     const antes = (await h.variante(variante)).stock;
     const r = await h.api('/checkout', {
       metodo: 'POST',
-      cuerpo: { contacto: contacto(email), despacho: retiro, acepta_terminos: true, items: [{ variante_id: variante, cantidad: 2 }] },
+      cuerpo: { contacto: contacto(email), despacho: domicilio, acepta_terminos: true, items: [{ variante_id: variante, cantidad: 2 }] },
     });
     assert.equal(r.status, 201, JSON.stringify(r.datos));
     assert.match(r.datos.url, /webpay/);
@@ -70,7 +70,7 @@ describe('compra como invitada', () => {
     const email = h.unico('sinterminos');
     const r = await h.api('/checkout', {
       metodo: 'POST',
-      cuerpo: { contacto: contacto(email), despacho: retiro, acepta_terminos: false, items: [{ variante_id: variante, cantidad: 1 }] },
+      cuerpo: { contacto: contacto(email), despacho: domicilio, acepta_terminos: false, items: [{ variante_id: variante, cantidad: 1 }] },
     });
     assert.equal(r.status, 422);
     const [{ total }] = await h.query('SELECT COUNT(*) AS total FROM pedidos WHERE email = ?', [email]);
@@ -82,7 +82,7 @@ describe('compra como invitada', () => {
     const email = h.unico('sinstock');
     const r = await h.api('/checkout', {
       metodo: 'POST',
-      cuerpo: { contacto: contacto(email), despacho: retiro, acepta_terminos: true, items: [{ variante_id: variante, cantidad: 3 }] },
+      cuerpo: { contacto: contacto(email), despacho: domicilio, acepta_terminos: true, items: [{ variante_id: variante, cantidad: 3 }] },
     });
     assert.equal(r.status, 409);
     assert.equal((await h.variante(variante)).stock, 1);
@@ -96,7 +96,7 @@ describe('compra como invitada', () => {
     const antes = (await h.variante(variante)).stock;
     const r = await h.api('/checkout', {
       metodo: 'POST',
-      cuerpo: { contacto: contacto(email), despacho: retiro, acepta_terminos: true, items: [{ variante_id: variante, cantidad: 1 }] },
+      cuerpo: { contacto: contacto(email), despacho: domicilio, acepta_terminos: true, items: [{ variante_id: variante, cantidad: 1 }] },
     });
     assert.equal(r.status, 502);
     const [pedido] = await h.query('SELECT estado FROM pedidos WHERE email = ?', [email]);
@@ -107,7 +107,7 @@ describe('compra como invitada', () => {
   test('el carrito vacío se rechaza', async () => {
     const r = await h.api('/checkout', {
       metodo: 'POST',
-      cuerpo: { contacto: contacto(h.unico('vacio')), despacho: retiro, acepta_terminos: true, items: [] },
+      cuerpo: { contacto: contacto(h.unico('vacio')), despacho: domicilio, acepta_terminos: true, items: [] },
     });
     assert.equal(r.status, 422);
   });
@@ -119,7 +119,7 @@ describe('compra con cuenta', () => {
     const r = await h.api('/checkout', {
       metodo: 'POST',
       cookie: cuenta.cookie,
-      cuerpo: { contacto: contacto(cuenta.email), despacho: retiro, acepta_terminos: true, items: [{ variante_id: variante, cantidad: 1 }] },
+      cuerpo: { contacto: contacto(cuenta.email), despacho: domicilio, acepta_terminos: true, items: [{ variante_id: variante, cantidad: 1 }] },
     });
     assert.equal(r.status, 201);
     const pedido = await pedidoDe(r.datos.codigo);
@@ -134,7 +134,7 @@ describe('compra con cuenta', () => {
     await h.api('/checkout', {
       metodo: 'POST',
       cookie: cuenta.cookie,
-      cuerpo: { contacto: contacto(cuenta.email), despacho: retiro, acepta_terminos: true, items: [{ variante_id: variante, cantidad: 1 }] },
+      cuerpo: { contacto: contacto(cuenta.email), despacho: domicilio, acepta_terminos: true, items: [{ variante_id: variante, cantidad: 1 }] },
     });
     const [u] = await h.query('SELECT telefono, rut FROM usuarios WHERE id = ?', [cuenta.id]);
     assert.equal(u.telefono, '+56912345678');
@@ -147,10 +147,11 @@ describe('cotización', () => {
     const [{ precio }] = await h.query('SELECT p.precio FROM variantes v JOIN productos p ON p.id = v.producto_id WHERE v.id = ?', [variante]);
     const r = await h.api('/checkout/cotizar', {
       metodo: 'POST',
-      cuerpo: { items: [{ variante_id: variante, cantidad: 2 }], despacho: retiro },
+      cuerpo: { items: [{ variante_id: variante, cantidad: 2 }], despacho: domicilio },
     });
     assert.equal(r.status, 200);
     assert.equal(r.datos.subtotal, precio * 2);
-    assert.equal(r.datos.total, precio * 2, 'retiro sin costo de envío');
+    assert.equal(r.datos.envio, precio * 2 >= 60000 ? 0 : 3990, 'envío a la RM según el umbral');
+    assert.equal(r.datos.total, precio * 2 + r.datos.envio);
   });
 });

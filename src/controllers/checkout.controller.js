@@ -13,9 +13,7 @@ const { webpay, urlRetorno } = require('../config/transbank');
 const { guardarDireccionPrincipal } = require('./cuenta.controller');
 
 function leerDespacho(body) {
-  const tipo = body?.despacho?.tipo === 'retiro' ? 'retiro' : 'domicilio';
-  if (tipo === 'retiro') return { tipo };
-  return { tipo, ...v.direccion(body.despacho || {}) };
+  return { tipo: 'domicilio', ...v.direccion(body.despacho || {}) };
 }
 
 /** GET /api/checkout/config — reglas de envío y regiones para el formulario */
@@ -25,9 +23,8 @@ function configuracion(_req, res) {
 
 /** POST /api/checkout/cotizar — revalida el carrito y calcula envío y total */
 async function cotizar(req, res) {
-  const tipo = req.body?.despacho?.tipo === 'retiro' ? 'retiro' : 'domicilio';
   const region = v.REGIONES.includes(req.body?.despacho?.region) ? req.body.despacho.region : null;
-  const cot = await pedidos.cotizar(req.body?.items, { tipo, region });
+  const cot = await pedidos.cotizar(req.body?.items, { region });
   res.json(cot);
 }
 

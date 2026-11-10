@@ -50,12 +50,12 @@ Recargar la página de retorno no genera un segundo commit.
 
 1. **Catálogo:** elige color y talla. Las tallas sin stock aparecen tachadas.
 2. **Carrito:** aumentar, disminuir o eliminar productos. El navegador solo guarda referencias.
-3. **Checkout** en 3 pasos: Datos → Envío (domicilio o retiro) → Pago. Se puede comprar como invitada; con sesión se precargan los datos y la dirección.
+3. **Checkout** en 3 pasos: Datos → Despacho a domicilio → Pago. Se puede comprar como invitada; con sesión se precargan los datos y la dirección.
 4. El servidor **recalcula precios desde la base**, **reserva el stock** en una transacción con bloqueo de filas y crea la transacción en Webpay.
 5. **Confirmación** con el comprobante de Transbank: comercio, orden, monto, código de autorización, fecha, tipo de pago, cuotas y últimos 4 dígitos.
 6. **Mi cuenta:** historial de pedidos y seguimiento con la fecha de cada cambio de estado.
 
-Reglas de despacho (configurables en `.env`): RM, regiones y umbral de envío gratis; retiro en showroom sin costo.
+Reglas de despacho (configurables en `.env`): tarifa RM, tarifa regiones y umbral de envío gratis.
 
 ## 5. Estructura
 

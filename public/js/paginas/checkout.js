@@ -16,14 +16,13 @@ const alertaGeneral = form.querySelector('[data-alerta-general]');
 const CONTACTO = ['nombre', 'apellido', 'email', 'telefono', 'rut'];
 const DIRECCION = ['region', 'comuna', 'calle', 'depto', 'referencia'];
 
-let config = { envio: { rm: 3990, regiones: 5990, gratisDesde: 60000, retiro: '' }, regiones: [] };
+let config = { envio: { rm: 3990, regiones: 5990, gratisDesde: 60000 }, regiones: [] };
 let cotizacion = null;
 let pasoActual = 1;
 let usuario = null;
 
 const campo = (nombre) => form.elements[nombre];
 const valor = (nombre) => (campo(nombre)?.value || '').trim();
-const tipoDespacho = () => form.querySelector('[name="despacho.tipo"]:checked')?.value || 'domicilio';
 
 // ---------- Validaciones del navegador (el servidor vuelve a validar todo) ----------
 function rutValido(rut) {
@@ -47,7 +46,6 @@ function validarContacto() {
 }
 
 function validarDespacho() {
-  if (tipoDespacho() === 'retiro') return {};
   const e = {};
   if (!valor('despacho.region')) e['despacho.region'] = 'Selecciona una región.';
   if (valor('despacho.comuna').length < 2) e['despacho.comuna'] = 'Ingresa la comuna.';
@@ -87,11 +85,7 @@ function resumirContacto() {
 
 function resumirDespacho() {
   const r = pasos[1].querySelector('[data-resumen]');
-  if (tipoDespacho() === 'retiro') {
-    r.innerHTML = `Retiro en showroom · ${esc(config.envio.retiro)}`;
-  } else {
-    r.innerHTML = `Despacho a domicilio<br>${esc(valor('despacho.calle'))}${valor('despacho.depto') ? ', ' + esc(valor('despacho.depto')) : ''}, ${esc(valor('despacho.comuna'))}, ${esc(valor('despacho.region'))}`;
-  }
+  r.innerHTML = `Despacho a domicilio<br>${esc(valor('despacho.calle'))}${valor('despacho.depto') ? ', ' + esc(valor('despacho.depto')) : ''}, ${esc(valor('despacho.comuna'))}, ${esc(valor('despacho.region'))}`;
 }
 
 form.addEventListener('click', (e) => {
@@ -118,14 +112,10 @@ function pintarResumen() {
       <span class="resumen-item__precio">${clp(l.subtotal)}</span>
     </div>`).join('');
   form.querySelector('[data-subtotal]').textContent = clp(cotizacion.subtotal);
-  const sinRegion = tipoDespacho() === 'domicilio' && !valor('despacho.region') && cotizacion.envio > 0;
+  const sinRegion = !valor('despacho.region') && cotizacion.envio > 0;
   form.querySelector('[data-envio]').textContent = cotizacion.envio === 0 ? 'Gratis' : `${sinRegion ? 'Desde ' : ''}${clp(cotizacion.envio)}`;
   form.querySelector('[data-total]').textContent = clp(cotizacion.total);
 
-  const gratis = cotizacion.subtotal >= config.envio.gratisDesde;
-  const region = valor('despacho.region');
-  form.querySelector('[data-precio-domicilio]').textContent = gratis ? 'Gratis'
-    : region ? clp(region === 'Metropolitana de Santiago' ? config.envio.rm : config.envio.regiones) : `Desde ${clp(config.envio.rm)}`;
 }
 
 function pintarAvisos(problemas) {
@@ -148,7 +138,7 @@ async function cotizar() {
       metodo: 'POST',
       cuerpo: {
         items: items.map((i) => ({ variante_id: i.variante_id, cantidad: i.cantidad })),
-        despacho: { tipo: tipoDespacho(), region: valor('despacho.region') || null },
+        despacho: { region: valor('despacho.region') || null },
       },
     });
     if (cotizacion.problemas.length) {
@@ -164,10 +154,6 @@ async function cotizar() {
 }
 
 form.addEventListener('change', (e) => {
-  if (e.target.name === 'despacho.tipo') {
-    form.querySelector('[data-direccion]').hidden = tipoDespacho() === 'retiro';
-    cotizar();
-  }
   if (e.target.name === 'despacho.region') cotizar();
 });
 window.addEventListener('carrito:cambio', cotizar);
@@ -197,7 +183,7 @@ form.addEventListener('submit', async (e) => {
 
   const cuerpo = {
     contacto: Object.fromEntries(CONTACTO.map((k) => [k, valor(`contacto.${k}`)])),
-    despacho: { tipo: tipoDespacho(), ...Object.fromEntries(DIRECCION.map((k) => [k, valor(`despacho.${k}`)])) },
+    despacho: { ...Object.fromEntries(DIRECCION.map((k) => [k, valor(`despacho.${k}`)])) },
     items: carrito.obtener().map((i) => ({ variante_id: i.variante_id, cantidad: i.cantidad })),
     acepta_terminos: true,
     guardar_direccion: Boolean(usuario && campo('guardar_direccion')?.checked),
@@ -244,7 +230,6 @@ async function iniciar() {
   try { config = await api('/checkout/config'); } catch { /* valores por defecto */ }
   const sel = campo('despacho.region');
   sel.insertAdjacentHTML('beforeend', config.regiones.map((r) => `<option value="${esc(r)}">${esc(r)}</option>`).join(''));
-  form.querySelector('[data-retiro-texto]').textContent = config.envio.retiro;
 
   usuario = await obtenerSesion();
   if (usuario) {

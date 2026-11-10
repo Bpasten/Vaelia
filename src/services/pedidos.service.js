@@ -48,7 +48,7 @@ const SQL_VARIANTES = `
  * Valida el carrito contra la base de datos y calcula totales.
  * Los precios SIEMPRE salen de MySQL, nunca del navegador.
  */
-async function cotizar(itemsEntrada, { tipo = 'domicilio', region = null } = {}, conn = null) {
+async function cotizar(itemsEntrada, { region = null } = {}, conn = null) {
   const items = normalizarItems(itemsEntrada);
   const ids = items.map((i) => i.variante_id);
   const sql = conn ? SQL_VARIANTES + ' FOR UPDATE' : SQL_VARIANTES;
@@ -80,7 +80,7 @@ async function cotizar(itemsEntrada, { tipo = 'domicilio', region = null } = {},
     });
   }
   const subtotal = lineas.reduce((s, l) => s + l.subtotal, 0);
-  const envio = costoEnvio(subtotal, tipo, region);
+  const envio = costoEnvio(subtotal, region);
   return { lineas, problemas, subtotal, envio, total: subtotal + envio };
 }
 
