@@ -537,12 +537,8 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   background: var(--verde-profundo) url('/img/marca/bosque-sm.jpg') center / cover;
 }
 .acceso__marca::before { content: ''; position: absolute; inset: 0; z-index: -1; background: rgba(24, 41, 31, .82); }
-.acceso__marca .hero__rama { margin: 0 auto 18px; width: 44px; height: 44px; }
-.acceso__marca h2 { font: 400 clamp(56px, 6.5vw, 86px)/1 var(--serif); letter-spacing: .14em; padding-left: .14em; }
+.acceso__logo { width: auto; height: clamp(150px, 16vw, 200px); margin: 0 auto 28px; }
 .acceso__marca .hero__lema { color: var(--beige-lino); font-size: 12px; }
-.acceso__marca .hero__linea { margin: 30px auto; }
-.acceso__beneficios { display: grid; gap: 12px; font-size: 14px; color: rgba(229, 216, 197, .85); }
-.acceso__beneficios li::before { content: '— '; color: var(--dorado); }
 .acceso__form { background: var(--papel); display: grid; place-items: center; padding: 56px var(--margen); }
 .acceso__caja { width: 100%; max-width: 460px; }
 .pestanas { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--linea); margin-bottom: 40px; }
@@ -750,8 +746,7 @@ textarea.control { height: auto; min-height: 90px; padding: 14px 16px; resize: v
   .galeria__miniaturas { grid-template-columns: repeat(4, 64px); order: 2; }
   .acceso { grid-template-columns: 1fr; }
   .acceso__marca { padding: 40px 24px; }
-  .acceso__marca h2 { font-size: 52px; }
-  .acceso__marca .hero__linea, .acceso__beneficios { display: none; }
+  .acceso__logo { height: 130px; }
   .checkout, .confirmacion { grid-template-columns: 1fr; }
   .resumen { position: static; order: -1; }
   .cuenta { grid-template-columns: 1fr; padding-top: 28px; }
